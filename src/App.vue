@@ -1,32 +1,45 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div id="app" class="container">
+    <section class="section">
+      <router-view/>
+    </section>
   </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  @font-face {
+    font-family: "Open Sans";
+    src: local("Open Sans"),
+        url(./assets/fonts/OpenSans/OpenSans-Regular.ttf) format("truetype");
+  }
 
-#nav {
-  padding: 30px;
-}
+  @font-face {
+    font-family: "Open Sans";
+    src: local("Open Sans"),
+        url(./assets/fonts/OpenSans/OpenSans-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
+  #app {
+    font-family: "Open Sans", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 16px;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  section.section {
+    width: 375px;
+    margin: auto;
+    padding-top: 2.5rem;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  button.button, button.button:hover {
+    width: 100%;
+    background-color: #FF5A5E;
+    color: white;
+    border-color: none;
+  }
 </style>
