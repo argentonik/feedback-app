@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import SignUpSuccess from '../views/SignUpSuccess.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
     path: '/signup',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/signup/success',
+    name: 'SignUpSuccess',
+    component: SignUpSuccess
   },
   {
     path: '/about',

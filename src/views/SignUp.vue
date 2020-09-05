@@ -7,13 +7,16 @@
         </div>
 
         <div class="container">
-            <form>
+            <form
+                method="POST" 
+                @submit.prevent="onRegister"
+            >
                 <b-field>
-                    <b-input value="jon@client.co.nz"></b-input>
+                    <b-input v-model="email" value="jon@client.co.nz"></b-input>
                 </b-field>
 
                 <b-field>
-                    <b-input type="password" placeholder="Enter your password"></b-input>
+                    <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
                 </b-field>
 
                 <div class="columns">
@@ -28,7 +31,7 @@
                     </div>
                 </div>
 
-                <b-button>Register</b-button>
+                <b-button native-type="submit">Register</b-button>
 
                 <p>Already have an account? <router-link to="/">Log in</router-link></p>
 
@@ -37,6 +40,37 @@
         </div>
     </div>
 </template>
+
+<script>
+import { mapActions} from 'vuex'
+
+export default {
+    data() {
+        return {
+            email : "",
+            password : "",
+        }
+    },
+      methods: {
+        ...mapActions({
+            register: 'authentication/register'
+        }),
+
+        onRegister: function () {
+            let email = this.email
+            let password = this.password
+
+            this.register({email, password})
+                .then(() => {
+                    this.$router.push('/')
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+}
+</script>
 
 <style scoped>
     /deep/ input.input {

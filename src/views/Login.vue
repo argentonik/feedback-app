@@ -7,13 +7,16 @@
         </div>
 
         <div class="container">
-            <form>
+            <form                 
+                method="POST" 
+                @submit.prevent="onLogin"
+            >
                 <b-field>
-                    <b-input value="jon@client.co.nz"></b-input>
+                    <b-input v-model="email" placeholder="Enter your email"></b-input>
                 </b-field>
 
                 <b-field>
-                    <b-input type="password" placeholder="Enter your password"></b-input>
+                    <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
                 </b-field>
 
                 <div class="columns">
@@ -28,7 +31,7 @@
                     </div>
                 </div>
 
-                <b-button>Login</b-button>
+                <b-button native-type="submit">Login</b-button>
 
                 <a link="#" class="forgot-password">Forgot password</a>
 
@@ -39,6 +42,37 @@
         </div>
     </div>
 </template>
+
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+    data() {
+        return {
+            email : "",
+            password : "",
+        }
+    },
+    methods: {
+        ...mapActions({
+            login: 'authentication/login'
+        }),
+
+        onLogin: function () {
+            let email = this.email 
+            let password = this.password
+            
+            this.login({ email, password })
+                .then(() => {
+                    this.$router.push('/')
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+}
+</script>
 
 <style scoped>
     /deep/ input.input {
