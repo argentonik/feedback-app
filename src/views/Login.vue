@@ -19,7 +19,7 @@
                     <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
                 </b-field>
 
-                <div class="columns">
+                <div class="columns is-mobile">
                     <div class="column remember-me">
                         <b-field>
                             <b-checkbox>Remember me</b-checkbox>

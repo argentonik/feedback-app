@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import SignUp from '../views/SignUp.vue'
-import SignUpSuccess from '../views/SignUpSuccess.vue'
+import Login from '../views/Login'
+import SignUp from '../views/SignUp'
+import SignUpSuccess from '../views/SignUpSuccess'
+import Feedback from '../views/Feedback'
 
 Vue.use(VueRouter)
 
@@ -10,17 +11,22 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
   },
   {
     path: '/signup',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
   },
   {
     path: '/signup/success',
     name: 'SignUpSuccess',
-    component: SignUpSuccess
+    component: SignUpSuccess,
+  },
+  {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Feedback,
   },
   {
     path: '/about',
@@ -33,9 +39,9 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
