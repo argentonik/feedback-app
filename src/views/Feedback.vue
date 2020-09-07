@@ -8,54 +8,30 @@
             </div>
         </div>
 
-        <div class="column">
-            <figure class="image container">
+        <div class="container">
+            <figure class="image container logo">
                 <img src="../assets/images/logo.png">
             </figure>
 
-            <h1 class="title is-5">How was DDB this week?</h1>
+            <div 
+                class="container feedback-writing"
+                v-if="isWritingFeedback"
+            >
+                <FeedbackAdd @backButtonClick="isWritingFeedback = false" />
+            </div>
 
-            <p>Your feedback helps improve DDB’s service delivery.</p>
-
-            <div class="columns is-centered is-mobile is-gapless">
-                <figure 
-                    v-for="n in numbers" v-bind:key="n"
-                    class="image column star"
+            <div 
+                class="container steps"
+                v-else
+            >
+                <FeedbackFirstStep />
+                <a 
+                    class="add-feedback" 
+                    @click="isWritingFeedback = true"
                 >
-                    <img src="../assets/images/star.png">
-                </figure>
+                    Add feedback
+                </a>
             </div>
-
-            <div class="columns is-mobile">
-                <div class="column star-options">
-                    <div class="columns is-mobile">
-                        <div class="column">
-                            <b-button outlined>Text 1</b-button>
-                        </div>
-                        <div class="column">
-                            <b-button outlined>Text 2</b-button>
-                        </div>
-                    </div>
-                    <div class="columns is-mobile">
-                        <div class="column is-mobile">
-                            <b-button outlined>Text 3</b-button>
-                        </div>
-                        <div class="column">
-                            <b-button outlined>Text 4</b-button>
-                        </div>
-                    </div>
-                    <div class="columns is-mobile">
-                        <div class="column">
-                            <b-button outlined>Text 5</b-button>
-                        </div>
-                        <div class="column">
-                            <b-button outlined>Text 6</b-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <a href="#">Add feedback</a>
 
             <b-progress type="is-danger" :value="33"></b-progress>
 
@@ -67,12 +43,20 @@
 </template>
 
 <script>
+import FeedbackAdd from './FeedbackAdd'
+import FeedbackFirstStep from './FeedbackFirstStep'
+
 export default {
     data() {
         return {
-            numbers: [ 1, 2, 3, 4, 5 ]
+            step: 1,
+            isWritingFeedback: false,
         }
     },
+    components: {
+        FeedbackFirstStep,
+        FeedbackAdd,
+    }
 }
 </script>
 
@@ -84,36 +68,34 @@ export default {
     .level.is-mobile .level-right.skip-button {
         margin-top: -17px;
         margin-right: 0.1rem;
-        font-size: 14px;
-        line-height: 19px;
     }
 
-    .image {
+    .image.logo {
         margin-top: -0.2rem;
         margin-bottom: 1.9rem;
         width: 100px;
         height: 100px;
     }
 
-    h1.title {
-        color: black;
+    .add-feedback {
+        display: inline-block;
+        margin: 30px 0;
     }
 
-    .star {
-        max-width: 33px;
-        max-height: 33px;
+    progress.progress {
+        background-color: #FF5A5E;
+        height: 5px;
     }
 
-    .star-options .button {
-        background-color: transparent;
-        border-color: #FF5A5E;
-        color: #FF5A5E;
+    /deep/ .progress-wrapper .progress {
         border-radius: 0;
-        height: 35px;
+        height: 5px;
     }
 
     a {
         color: #00C3AC;
         font-weight: bold;
+        font-size: 14px;
+        line-height: 19px;
     }
 </style>

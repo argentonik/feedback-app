@@ -21,6 +21,14 @@
     font-style: normal;
   }
 
+  @font-face {
+    font-family: "Open Sans";
+    src: local("Open Sans"),
+        url(./assets/fonts/OpenSans/OpenSans-Light.ttf) format("truetype");
+    font-weight: light;
+    font-style: normal;
+  }
+
   html, body, #app, .section {
       height: 100%;
   }
