@@ -24,7 +24,9 @@
                 class="container steps"
                 v-else
             >
-                <FeedbackFirstStep />
+                <FeedbackFirstQuestion v-if="question == 1"/>
+                <FeedbackSecondQuestion v-if="question == 2"/>
+
                 <a 
                     class="add-feedback" 
                     @click="isWritingFeedback = true"
@@ -36,7 +38,7 @@
             <b-progress type="is-danger" :value="33"></b-progress>
 
             <div class="buttons">
-                <b-button>Continue</b-button>
+                <b-button @click="onContinue">Continue</b-button>
             </div>
         </div>
     </div>
@@ -44,18 +46,27 @@
 
 <script>
 import FeedbackAdd from './FeedbackAdd'
-import FeedbackFirstStep from './FeedbackFirstStep'
+import FeedbackFirstQuestion from './FeedbackFirstQuestion'
+import FeedbackSecondQuestion from './FeedbackSecondQuestion'
 
 export default {
     data() {
         return {
-            step: 1,
+            question: 1,
+            totalQuestions: 3,
             isWritingFeedback: false,
         }
     },
     components: {
-        FeedbackFirstStep,
         FeedbackAdd,
+        FeedbackFirstQuestion,
+        FeedbackSecondQuestion,
+    },
+    methods: {
+        onContinue() {
+            this.question += 1
+            console.log(this.question)
+        }
     }
 }
 </script>
