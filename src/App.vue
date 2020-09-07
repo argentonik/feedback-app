@@ -20,6 +20,11 @@
     font-weight: bold;
     font-style: normal;
   }
+
+  html, body, #app, .section {
+      height: 100%;
+  }
+
   #app {
     font-family: "Open Sans", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -40,6 +45,6 @@
     width: 100%;
     background-color: #FF5A5E;
     color: white;
-    border-color: none;
+    border-color: transparent;
   }
 </style>
