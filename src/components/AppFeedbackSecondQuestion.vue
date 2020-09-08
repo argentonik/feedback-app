@@ -1,8 +1,31 @@
 <template>
     <div class="container is-centered">
         <h1 class="title">How did DDB rate against the following?</h1>
+
+        <div class="colums is-mobile">
+            <div class="column">
+                <AppStarsRaitingWithDescription 
+                    description="Understands my business"
+                />
+            </div>
+            <div class="column">
+                <AppStarsRaitingWithDescription 
+                    description="Proactive with ideas"
+                />
+            </div>
+        </div>
     </div>
 </template>
+
+<script>
+import AppStarsRaitingWithDescription from './AppStarsRaitingWithDescription'
+
+export default {
+    components: {
+        AppStarsRaitingWithDescription,
+    }
+}
+</script>
 
 <style scoped>
     h1.title {

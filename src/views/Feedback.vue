@@ -82,8 +82,8 @@ export default {
     }
 
     .image.logo {
-        margin-top: -0.2rem;
-        margin-bottom: 1.9rem;
+        margin-top: 32px;
+        margin-bottom: 32px;
         width: 100px;
         height: 100px;
     }
