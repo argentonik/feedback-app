@@ -1,6 +1,6 @@
 <template>
     <div class="columns is-mobile">
-        <div class="column">
+        <div class="column description">
             {{ this.description }}
         </div>
         <div class="column">
@@ -31,3 +31,16 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .column {
+        padding-left: 0;
+        padding-right: 0;
+    } 
+
+    .description {
+        font-size: 12px;
+        font-weight: 300;
+        text-align: left;
+    }
+</style>

@@ -4,15 +4,16 @@
         :style="cssProps"
     >
         <figure 
-            v-for="s in stars" v-bind:key="s"
+            v-for="star in stars" v-bind:key="star"
             class="image column star"
         >
-            <img src="../assets/images/star.png">
+            <img src="../assets/images/star.svg" @click="toogleStars($event)">
         </figure>
     </div>
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -37,6 +38,37 @@ export default {
                 '--star-max-width': this.maxSize,
             }
         }
+    },
+    methods: {
+        toogleStars(event) {
+            let selectedStar = event.target
+            selectedStar.classList.toggle('selected')
+
+            if (selectedStar.classList.contains('selected')) {
+                selectedStar.src = require('../assets/images/selected-star.svg')
+            } else {
+                selectedStar.src = require('../assets/images/star.svg')
+            }
+
+            this.toogleNextSiblingStars(selectedStar)
+            this.tooglePrevSiblingStars(selectedStar, selectedStar.src)
+        },
+
+        toogleNextSiblingStars(selectedStar) {
+            let sibling = selectedStar.parentElement.nextSibling
+            while (sibling) {
+                sibling.firstElementChild.src = require('../assets/images/star.svg')
+                sibling = sibling.nextSibling
+            }
+        },
+
+        tooglePrevSiblingStars(selectedStar, selectedStarSrc) {
+            let sibling = selectedStar.parentElement.previousSibling
+            while (sibling) {
+                sibling.firstElementChild.src = selectedStarSrc
+                sibling = sibling.previousSibling
+            }
+        },
     }
 }
 </script>
