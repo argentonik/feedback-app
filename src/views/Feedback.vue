@@ -52,7 +52,7 @@ import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
 export default {
     data() {
         return {
-            question: 2,
+            question: 1,
             totalQuestions: 3,
             isWritingFeedback: false,
         }

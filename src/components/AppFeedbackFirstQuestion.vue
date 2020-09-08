@@ -5,14 +5,11 @@
         <p>Your feedback helps improve</p>
         <p>DDB’s service delivery.</p>
 
-        <div class="columns stars is-centered is-mobile is-gapless">
-            <figure 
-                v-for="n in numbers" v-bind:key="n"
-                class="image column star"
-            >
-                <img src="../assets/images/star.png">
-            </figure>
-        </div>
+        <AppStarsRaiting 
+            class="stars-raiting"
+            size="33px"
+            maxSize="39px"
+        />
 
         <div class="columns is-mobile">
             <div class="column star-options">
@@ -46,11 +43,11 @@
 </template>
 
 <script>
+import AppStarsRaiting from './AppStarsRaiting'
+
 export default {
-    data() {
-        return {
-            numbers: [ 1, 2, 3, 4, 5 ]
-        }
+    components: {
+        AppStarsRaiting,
     },
 }
 </script>
@@ -68,18 +65,8 @@ export default {
         color: black;
     }
 
-    .stars {
+    .stars-raiting {
         margin-top: 1rem;
-    }
-
-    .star {
-        max-width: 39px;
-    }
-
-    .star img {
-        height: 33px;
-        width: 33px;
-        cursor: pointer;
     }
 
     .star-options .button {
