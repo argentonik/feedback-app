@@ -17,15 +17,15 @@
                 class="container feedback-writing"
                 v-if="isWritingFeedback"
             >
-                <FeedbackAdd @backButtonClick="isWritingFeedback = false" />
+                <AppFeedbackAdd @backButtonClick="isWritingFeedback = false" />
             </div>
 
             <div 
                 class="container steps"
                 v-else
             >
-                <FeedbackFirstQuestion v-if="question == 1"/>
-                <FeedbackSecondQuestion v-if="question == 2"/>
+                <AppFeedbackFirstQuestion v-if="question == 1"/>
+                <AppFeedbackSecondQuestion v-if="question == 2"/>
 
                 <a 
                     class="add-feedback" 
@@ -45,22 +45,22 @@
 </template>
 
 <script>
-import FeedbackAdd from './FeedbackAdd'
-import FeedbackFirstQuestion from './FeedbackFirstQuestion'
-import FeedbackSecondQuestion from './FeedbackSecondQuestion'
+import AppFeedbackAdd from '../components/AppFeedbackAdd'
+import AppFeedbackFirstQuestion from '../components/AppFeedbackFirstQuestion'
+import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
 
 export default {
     data() {
         return {
-            question: 1,
+            question: 2,
             totalQuestions: 3,
             isWritingFeedback: false,
         }
     },
     components: {
-        FeedbackAdd,
-        FeedbackFirstQuestion,
-        FeedbackSecondQuestion,
+        AppFeedbackAdd,
+        AppFeedbackFirstQuestion,
+        AppFeedbackSecondQuestion,
     },
     methods: {
         onContinue() {
