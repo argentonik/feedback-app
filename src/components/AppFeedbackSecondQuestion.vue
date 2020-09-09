@@ -1,6 +1,6 @@
 <template>
     <div class="container is-centered">
-        <h1 class="title">How did DDB rate against the following?</h1>
+        <AppFeedbackHeader class="title">How did DDB rate against the following?</AppFeedbackHeader>
 
         <div class="colums is-mobile">
             <div class="column">
@@ -33,23 +33,20 @@
 </template>
 
 <script>
+import AppFeedbackHeader from './AppFeedbackHeader'
 import AppStarsRaitingWithDescription from './AppStarsRaitingWithDescription'
 
 export default {
     components: {
+        AppFeedbackHeader,
         AppStarsRaitingWithDescription,
     }
 }
 </script>
 
 <style scoped>
-    h1.title {
+    .title {
         margin-bottom: 1.2rem;
-        color: black;
         max-width: 222px;
-        margin: auto;
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 27px;
     }
 </style>

@@ -4,7 +4,7 @@
         :style="cssProps"
     >
         <figure 
-            v-for="star in stars" v-bind:key="star"
+            v-for="n in 5" v-bind:key="n"
             class="image column star"
         >
             <img src="../assets/images/star.svg" @click="toogleStars($event)">
@@ -15,11 +15,6 @@
 <script>
 
 export default {
-    data() {
-        return {
-            stars: [ 1, 2, 3, 4, 5 ]
-        }
-    },
     props: {
         size: {
             type: String,

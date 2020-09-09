@@ -25,7 +25,8 @@
                 v-else
             >
                 <AppFeedbackFirstQuestion v-if="question == 1"/>
-                <AppFeedbackSecondQuestion v-if="question == 2"/>
+                <AppFeedbackSecondQuestion v-else-if="question == 2"/>
+                <AppFeedbackThirdQuestion v-else-if="question == 3"/>
 
                 <a 
                     class="add-feedback" 
@@ -48,11 +49,12 @@
 import AppFeedbackAdd from '../components/AppFeedbackAdd'
 import AppFeedbackFirstQuestion from '../components/AppFeedbackFirstQuestion'
 import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
+import AppFeedbackThirdQuestion from '../components/AppFeedbackThirdQuestion'
 
 export default {
     data() {
         return {
-            question: 1,
+            question: 3,
             totalQuestions: 3,
             isWritingFeedback: false,
         }
@@ -61,6 +63,7 @@ export default {
         AppFeedbackAdd,
         AppFeedbackFirstQuestion,
         AppFeedbackSecondQuestion,
+        AppFeedbackThirdQuestion,
     },
     methods: {
         onContinue() {

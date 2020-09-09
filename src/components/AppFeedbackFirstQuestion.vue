@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="title is-5">How was DDB this week?</h1>
+        <AppFeedbackHeader class="title">How was DDB this week?</AppFeedbackHeader>
 
         <p>Your feedback helps improve</p>
         <p>DDB’s service delivery.</p>
@@ -43,10 +43,12 @@
 </template>
 
 <script>
+import AppFeedbackHeader from './AppFeedbackHeader'
 import AppStarsRaiting from './AppStarsRaiting'
 
 export default {
     components: {
+        AppFeedbackHeader,
         AppStarsRaiting,
     },
 }
@@ -60,9 +62,8 @@ export default {
         color: #9B9B9B;
     }
 
-    h1.title {
+    .title {
         margin-bottom: 1.2rem;
-        color: black;
     }
 
     .stars-raiting {
