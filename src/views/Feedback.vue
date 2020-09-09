@@ -3,11 +3,21 @@
         <div class="level is-mobile">
             <div class="level-left">
                 <a 
-                    class="level-item back-button"
+                    class="level-item"
                     v-if="question != 1"
-                    @click="onBack"
                 >
-                    <img src="../assets/images/back.png">
+                    <img 
+                        src="../assets/images/back.png" 
+                        class="back-button" 
+                        v-if="question <= totalQuestions"
+                        @click="onBack"
+                    >
+                    <img 
+                        src="../assets/images/close.png" 
+                        class="close-button" 
+                        v-else
+                        @click="onClose"
+                    >
                 </a>
             </div>
 
@@ -40,9 +50,11 @@
                 <AppFeedbackFirstQuestion v-if="question == 1"/>
                 <AppFeedbackSecondQuestion v-else-if="question == 2"/>
                 <AppFeedbackThirdQuestion v-else-if="question == 3"/>
+                <AppFeedbackFinish v-else />
 
                 <a 
                     class="add-feedback" 
+                    v-if="question <= totalQuestions"
                     @click="isWritingFeedback = true"
                 >
                     Add feedback
@@ -52,7 +64,8 @@
             <b-progress type="is-danger" :value="progress"></b-progress>
 
             <div class="buttons">
-                <b-button @click="onContinue">Continue</b-button>
+                <b-button @click="onContinue" v-if="question <= totalQuestions">Continue</b-button>
+                <b-button @click="onClose" v-else>Close</b-button>
             </div>
         </div>
     </div>
@@ -63,6 +76,7 @@ import AppFeedbackAdd from '../components/AppFeedbackAdd'
 import AppFeedbackFirstQuestion from '../components/AppFeedbackFirstQuestion'
 import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
 import AppFeedbackThirdQuestion from '../components/AppFeedbackThirdQuestion'
+import AppFeedbackFinish from '../components/AppFeedbackFinish'
 
 export default {
     components: {
@@ -70,6 +84,7 @@ export default {
         AppFeedbackFirstQuestion,
         AppFeedbackSecondQuestion,
         AppFeedbackThirdQuestion,
+        AppFeedbackFinish,
     },
     data() {
         return {
@@ -96,6 +111,10 @@ export default {
         onContinue() {
             this.question++
         },
+
+        onClose() {
+
+        },
     }
 }
 </script>
@@ -103,6 +122,11 @@ export default {
 <style scoped>
     .feedback-view {
         height: 100%;
+    }
+
+    .close-button {
+        width: 12px;
+        height: 12px;
     }
 
     .back-button {
