@@ -1,10 +1,23 @@
 <template>
     <div class="feedback-view container">
         <div class="level is-mobile">
-            <div class="level-left"></div>
+            <div class="level-left">
+                <a 
+                    class="level-item back-button"
+                    v-if="question != 1"
+                    @click="onBack"
+                >
+                    <img src="../assets/images/back.png">
+                </a>
+            </div>
 
             <div class="level-right skip-button">
-                <a class="level-item" href="#">Skip</a>
+                <a 
+                    class="level-item"
+                    @click="onSkip"
+                >
+                    Skip
+                </a>
             </div>
         </div>
 
@@ -36,7 +49,7 @@
                 </a>
             </div>
 
-            <b-progress type="is-danger" :value="33"></b-progress>
+            <b-progress type="is-danger" :value="progress"></b-progress>
 
             <div class="buttons">
                 <b-button @click="onContinue">Continue</b-button>
@@ -52,24 +65,37 @@ import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
 import AppFeedbackThirdQuestion from '../components/AppFeedbackThirdQuestion'
 
 export default {
-    data() {
-        return {
-            question: 3,
-            totalQuestions: 3,
-            isWritingFeedback: false,
-        }
-    },
     components: {
         AppFeedbackAdd,
         AppFeedbackFirstQuestion,
         AppFeedbackSecondQuestion,
         AppFeedbackThirdQuestion,
     },
-    methods: {
-        onContinue() {
-            this.question += 1
-            console.log(this.question)
+    data() {
+        return {
+            question: 1,
+            totalQuestions: 3,
+            isWritingFeedback: false,
+            progress: 33,
         }
+    },
+    watch: {
+        question(val) {
+            this.progress = val * 33
+        }
+    },
+    methods: {
+        onBack() {
+            this.question--
+        },
+
+        onSkip() {
+            this.question++
+        },
+
+        onContinue() {
+            this.question++
+        },
     }
 }
 </script>
@@ -77,6 +103,11 @@ export default {
 <style scoped>
     .feedback-view {
         height: 100%;
+    }
+
+    .back-button {
+        width: 25px;
+        height: 25px;
     }
 
     .level.is-mobile .level-right.skip-button {
