@@ -1,9 +1,8 @@
 <template>
     <div class="container">
-        <AppFeedbackHeader class="title">How was DDB this week?</AppFeedbackHeader>
+        <AppFeedbackHeader class="title">{{ question.text }}</AppFeedbackHeader>
 
-        <p>Your feedback helps improve</p>
-        <p>DDB’s service delivery.</p>
+        <p>{{ question.description }}</p>
 
         <AppStarsRaiting 
             class="stars-raiting"
@@ -50,6 +49,12 @@ export default {
     components: {
         AppFeedbackHeader,
         AppStarsRaiting,
+    },
+    props: {
+        question: {
+            type: Object,
+            required: true,
+        },
     },
 }
 </script>

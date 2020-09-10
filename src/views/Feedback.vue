@@ -1,15 +1,18 @@
 <template>
-    <div class="feedback-view container">
+    <div 
+        class="feedback-view container"
+        v-if="currentQuestion"
+    >
         <div class="level is-mobile">
             <div class="level-left">
                 <a 
                     class="level-item"
-                    v-if="question != 1"
+                    v-if="currentQuestionIndex != 0"
                 >
                     <img 
                         src="../assets/images/back.png" 
                         class="back-button" 
-                        v-if="question <= totalQuestions"
+                        v-if="currentQuestionIndex <= totalQuestions - 1"
                         @click="onBack"
                     >
                     <img 
@@ -47,14 +50,20 @@
                 class="container steps"
                 v-else
             >
-                <AppFeedbackFirstQuestion v-if="question == 1"/>
-                <AppFeedbackSecondQuestion v-else-if="question == 2"/>
-                <AppFeedbackThirdQuestion v-else-if="question == 3"/>
+                <AppFeedbackRaitingWithTagsQuestion 
+                    :question="currentQuestion"
+                    v-if="currentQuestion.type.id == 1"/>
+                <AppFeedbackMultiRaitingQuestion 
+                    :question="currentQuestion"
+                    v-else-if="currentQuestion.type.id == 2"/>
+                <AppFeedbackScaleQuestion 
+                    :question="currentQuestion"
+                    v-else-if="currentQuestion.type.id == 3"/>
                 <AppFeedbackFinish v-else />
 
                 <a 
                     class="add-feedback" 
-                    v-if="question <= totalQuestions"
+                    v-if="currentQuestionIndex <= totalQuestions - 1"
                     @click="isWritingFeedback = true"
                 >
                     Add feedback
@@ -64,7 +73,7 @@
             <b-progress type="is-danger" :value="progress"></b-progress>
 
             <div class="buttons">
-                <b-button @click="onContinue" v-if="question <= totalQuestions">Continue</b-button>
+                <b-button @click="onContinue" v-if="currentQuestionIndex <= totalQuestions - 1">Continue</b-button>
                 <b-button @click="onClose" v-else>Close</b-button>
             </div>
         </div>
@@ -73,43 +82,71 @@
 
 <script>
 import AppFeedbackAdd from '../components/AppFeedbackAdd'
-import AppFeedbackFirstQuestion from '../components/AppFeedbackFirstQuestion'
-import AppFeedbackSecondQuestion from '../components/AppFeedbackSecondQuestion'
-import AppFeedbackThirdQuestion from '../components/AppFeedbackThirdQuestion'
+
+import AppFeedbackRaitingWithTagsQuestion from '../components/AppFeedbackRaitingWithTagsQuestion'
+import AppFeedbackMultiRaitingQuestion from '../components/AppFeedbackMultiRaitingQuestion'
+import AppFeedbackScaleQuestion from '../components/AppFeedbackScaleQuestion'
+
 import AppFeedbackFinish from '../components/AppFeedbackFinish'
+
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     components: {
         AppFeedbackAdd,
-        AppFeedbackFirstQuestion,
-        AppFeedbackSecondQuestion,
-        AppFeedbackThirdQuestion,
+        AppFeedbackRaitingWithTagsQuestion,
+        AppFeedbackMultiRaitingQuestion,
+        AppFeedbackScaleQuestion,
         AppFeedbackFinish,
     },
+
     data() {
         return {
-            question: 1,
-            totalQuestions: 3,
+            currentQuestionIndex: 0,
+            currentQuestion: null,
+            totalQuestions: null,
             isWritingFeedback: false,
-            progress: 33,
+            progress: 0,
+            progressStep: 0,
         }
     },
+
+    computed: mapGetters({
+        servey: 'surveys/servey',
+    }),
+
     watch: {
-        question(val) {
-            this.progress = val * 33
+        currentQuestionIndex(index) {
+            this.progress = (index + 1) * this.progressStep
         }
     },
+
+    mounted() {
+        this.getServeyById().then(() => {
+            this.currentQuestion = this.servey.questions[0]
+            this.totalQuestions = this.servey.questions.length
+            this.progressStep = 100 / this.totalQuestions
+            this.progress = this.progressStep
+
+            console.log(this.totalQuestions)
+        })
+    },
+
     methods: {
+        ...mapActions({
+            getServeyById: 'surveys/getById'
+        }),
+
         onBack() {
-            this.question--
+            this.currentQuestion = this.servey.questions[--this.currentQuestionIndex]
         },
 
         onSkip() {
-            this.question++
+            this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
         },
 
         onContinue() {
-            this.question++
+            this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
         },
 
         onClose() {

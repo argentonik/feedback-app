@@ -1,7 +1,7 @@
 <template>
     <div class="container is-centered">
         <AppFeedbackHeader class="title">
-            How likely is it that you would recommend DDB to a friend or colleague?
+            {{ question.text }}
         </AppFeedbackHeader>
 
         <AppFromOneToTenRaiting />
@@ -16,7 +16,13 @@ export default {
     components: {
         AppFeedbackHeader,
         AppFromOneToTenRaiting,
-    }
+    },
+    props: {
+        question: {
+            type: Object,
+            required: true,
+        },
+    },
 }
 </script>
 
