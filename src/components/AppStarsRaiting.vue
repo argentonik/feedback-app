@@ -4,17 +4,22 @@
         :style="cssProps"
     >
         <figure 
-            v-for="n in 5" v-bind:key="n"
-            class="image column star"
+            v-for="n in 5" :key="n"
+            :class="['image', 'column', 'star', `star-${n}`]"
+            @click="toogleStars(n)"
         >
-            <img src="../assets/images/star.svg" @click="toogleStars($event)">
+            <AppStar :ref="`star-${n}`" />
         </figure>
     </div>
 </template>
 
 <script>
+import AppStar from './AppStar'
 
 export default {
+    components: {
+        AppStar,
+    },
     props: {
         size: {
             type: String,
@@ -23,6 +28,11 @@ export default {
         maxSize: {
             type: String,
             required: true,
+        }
+    },
+    data() {
+        return {
+            currentStar: -1,
         }
     },
     computed: {
@@ -35,33 +45,22 @@ export default {
         }
     },
     methods: {
-        toogleStars(event) {
-            let selectedStar = event.target
-            selectedStar.classList.toggle('selected')
-
-            if (selectedStar.classList.contains('selected')) {
-                selectedStar.src = require('../assets/images/selected-star.svg')
-            } else {
-                selectedStar.src = require('../assets/images/star.svg')
+        toogleStars(selectedStar) {
+            let previousSelectedStar = this.$refs['star-'.concat(this.currentStar)]
+            if (previousSelectedStar) {
+                for(let i = this.currentStar; i > 0; i--) {
+                    this.$refs['star-'.concat(i)][0].selected = false
+                }
             }
 
-            this.toogleNextSiblingStars(selectedStar)
-            this.tooglePrevSiblingStars(selectedStar, selectedStar.src)
-        },
-
-        toogleNextSiblingStars(selectedStar) {
-            let sibling = selectedStar.parentElement.nextSibling
-            while (sibling) {
-                sibling.firstElementChild.src = require('../assets/images/star.svg')
-                sibling = sibling.nextSibling
-            }
-        },
-
-        tooglePrevSiblingStars(selectedStar, selectedStarSrc) {
-            let sibling = selectedStar.parentElement.previousSibling
-            while (sibling) {
-                sibling.firstElementChild.src = selectedStarSrc
-                sibling = sibling.previousSibling
+            this.currentStar = selectedStar
+            for(let i = selectedStar; i > 0; i--) {
+                if (selectedStar <= 3) {
+                    this.$refs['star-'.concat(i)][0].selectedColor = 'black'
+                } else {
+                    this.$refs['star-'.concat(i)][0].selectedColor = '#FF5A5E'
+                }
+                this.$refs['star-'.concat(i)][0].selected = true
             }
         },
     }
@@ -73,7 +72,7 @@ export default {
         max-width: var(--star-max-width);
     }
 
-    .star img {
+    .star svg {
         height: var(--star-height);
         width: var(--star-width);
         cursor: pointer;
