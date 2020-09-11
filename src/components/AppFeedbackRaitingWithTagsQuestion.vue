@@ -13,6 +13,7 @@
             class="stars-raiting"
             size="33px"
             maxSize="39px"
+            :defaultValue="isAlreadyExistAnswer() ? this.answer.raiting : null"
             @toggleStar="onToggleStar"
         />
 
@@ -23,7 +24,7 @@
                 :key="i"
                 @click="onStarOptionClick(i, tag)"
             >
-                <b-button outlined>{{ tag }}</b-button>
+                <b-button :disabled="isAlreadyExistAnswer()" outlined>{{ tag }}</b-button>
             </div>
         </div>
     </div>
@@ -43,23 +44,47 @@ export default {
             type: Object,
             required: true,
         },
+        answer: {
+            type: Object,
+            default: null,
+        }
     },
     data() {
         return {
-            checkedStar: null,
-            selectedTags: [],
+            checkedStar: this.answer ? this.answer.raiting : null,
+            selectedTags: this.answer ? this.answer.tags : [],
             selectedTagsIndices: [],
+            disabled: this.answer ? true : false,
+        }
+    },
+    mounted() {
+        // select options from answer if passed default answer
+        if (this.answer && this.selectedTags.length) {
+            this.$el.querySelectorAll('.star-options').forEach(starOption => {
+                if (this.selectedTags.includes(starOption.firstElementChild.textContent)) {
+                    starOption.classList.add('selected')
+                }
+            })
         }
     },
     methods: {
         onToggleStar(star) {
+            if (this.disabled) {
+                return
+            }
+
             if (!(this.checkedStar <= 3 && star <= 3) && !(this.checkedStar > 3 && star > 3)) {
                 this.unselectAllSelectedTags()
             }
             this.checkedStar = star
+            this.$emit('selectStar', star)
         },
 
         onStarOptionClick(index, tag) {
+            if (this.disabled) {
+                return
+            }
+            
             if (this.selectedTagsIndices.includes(index)) {
                 this.selectedTagsIndices = this.selectedTagsIndices.filter(item => item !== index)
                 this.selectedTags = this.selectedTags.filter(item => item !== tag)
@@ -69,6 +94,7 @@ export default {
                 this.selectedTags.push(tag)
                 this.$el.querySelector('.star-option-'.concat(index)).classList.add('selected')
             }
+            this.$emit('selectTag', this.selectedTags)
         },
 
         unselectAllSelectedTags() {
@@ -77,11 +103,16 @@ export default {
             })
             this.selectedTags = []
             this.selectedTagsIndices = []
+            this.$emit('selectTag', this.selectedTags)
         },
 
         getOptions() {
             return this.checkedStar <= 3 ? this.question.options['3'] : this.question.options['5']
         },
+
+        isAlreadyExistAnswer() {
+            return this.answer ? true : false;
+        }
     }
 }
 </script>
@@ -114,5 +145,10 @@ export default {
         border-color: #FF5A5E;
         background-color: #FF5A5E;
         color: white;
+    }
+
+    .star-options .button:disabled {
+        opacity: 1;
+        cursor: default;
     }
 </style>

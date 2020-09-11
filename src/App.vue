@@ -55,4 +55,11 @@
     color: white;
     border-color: transparent;
   }
+
+  button.button, button.button:disabled {
+    width: 100%;
+    background-color: #FF5A5E;
+    color: white;
+    border-color: transparent;
+  }
 </style>

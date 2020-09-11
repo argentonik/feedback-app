@@ -1,7 +1,27 @@
 const servey = state => state.servey
-const isLoading = state => state.loading
+
+const answers = state => state.answers
+
+const isAnswerExist = state => questionIndex => {
+    let answer = state.answers.filter(answer => {
+        return answer.question_id === questionIndex
+    })
+
+    return answer.length ? true : false
+}
+
+const getAnswerIfExist = state => questionIndex => {
+    let answer = state.answers.filter(answer => {
+        return answer.question_id === questionIndex
+    })
+
+    return answer.length ? answer[0].answer_data : null
+}
+
 
 export default {
     servey,
-    isLoading,
+    answers,
+    isAnswerExist,
+    getAnswerIfExist,
 }

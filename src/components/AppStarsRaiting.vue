@@ -28,11 +28,15 @@ export default {
         maxSize: {
             type: String,
             required: true,
-        }
+        },
+        defaultValue: {
+            default: null,
+        },
     },
     data() {
         return {
             currentStar: -1,
+            disabled: this.defaultValue ? true : false,
         }
     },
     computed: {
@@ -44,8 +48,17 @@ export default {
             }
         }
     },
+    mounted() {
+        if (this.defaultValue) {
+            this.selectStars(this.defaultValue)
+        }
+    },
     methods: {
         toggleStars(selectedStar) {
+            if (this.disabled) {
+                return
+            }
+
             let previousSelectedStar = this.$refs['star-'.concat(this.currentStar)]
             if (previousSelectedStar) {
                 for(let i = this.currentStar; i > 0; i--) {
@@ -54,6 +67,12 @@ export default {
             }
 
             this.currentStar = selectedStar
+            this.selectStars(selectedStar)
+
+            this.$emit('toggleStar', selectedStar)
+        },
+
+        selectStars(selectedStar) {
             for(let i = selectedStar; i > 0; i--) {
                 if (selectedStar <= 1) {
                     this.$refs['star-'.concat(i)][0].selectedColor = 'black'
@@ -62,8 +81,6 @@ export default {
                 }
                 this.$refs['star-'.concat(i)][0].selected = true
             }
-
-            this.$emit('toggleStar', selectedStar)
         },
     }
 }

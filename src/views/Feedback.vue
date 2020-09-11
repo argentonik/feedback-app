@@ -41,18 +41,22 @@
 
             <div 
                 class="container feedback-writing"
-                v-if="isWritingFeedback"
+                v-show="isWritingFeedback"
             >
                 <AppFeedbackAdd @backButtonClick="isWritingFeedback = false" />
             </div>
 
             <div 
                 class="container steps"
-                v-else
+                v-show="!isWritingFeedback"
             >
                 <AppFeedbackRaitingWithTagsQuestion 
                     :question="currentQuestion"
-                    v-if="currentQuestion.type.id == 1"/>
+                    :answer="getAnswerIfExist(currentQuestionIndex)"
+                    @selectStar="onSelectRaitingWithTagsStar"
+                    @selectTag="onSelectRaitingWithTagsTag"
+                    v-if="currentQuestion.type.id == 1"
+                />
                 <AppFeedbackMultiRaitingQuestion 
                     :question="currentQuestion"
                     v-else-if="currentQuestion.type.id == 2"/>
@@ -73,7 +77,11 @@
             <b-progress type="is-danger" :value="progress"></b-progress>
 
             <div class="buttons">
-                <b-button @click="onContinue" v-if="currentQuestionIndex <= totalQuestions - 1">Continue</b-button>
+                <b-button 
+                    @click="onContinue" 
+                    :disabled="!isAllDataAnswered() && !isAnswerExist(currentQuestionIndex)"
+                    v-if="currentQuestionIndex <= totalQuestions - 1"
+                > Continue</b-button>
                 <b-button @click="onClose" v-else>Close</b-button>
             </div>
         </div>
@@ -104,6 +112,7 @@ export default {
         return {
             currentQuestionIndex: 0,
             currentQuestion: null,
+            currentAnswer: null,
             totalQuestions: null,
             isWritingFeedback: false,
             progress: 0,
@@ -111,9 +120,14 @@ export default {
         }
     },
 
-    computed: mapGetters({
-        servey: 'surveys/servey',
-    }),
+    computed: {
+        ...mapGetters({
+            servey: 'surveys/servey',
+            answers: 'surveys/answers',
+            isAnswerExist: 'surveys/isAnswerExist',
+            getAnswerIfExist: 'surveys/getAnswerIfExist',
+        }),
+    },
 
     watch: {
         currentQuestionIndex(index) {
@@ -124,17 +138,19 @@ export default {
     mounted() {
         this.getServeyById().then(() => {
             this.currentQuestion = this.servey.questions[0]
+            this.currentQuestionIndex = 0
             this.totalQuestions = this.servey.questions.length
             this.progressStep = 100 / this.totalQuestions
             this.progress = this.progressStep
 
-            console.log(this.totalQuestions)
+            this.currentAnswer = this.createAnswerStructure()
         })
     },
 
     methods: {
         ...mapActions({
-            getServeyById: 'surveys/getById'
+            getServeyById: 'surveys/getById',
+            addToAnswers: 'surveys/addToAnswers',
         }),
 
         onBack() {
@@ -143,15 +159,46 @@ export default {
 
         onSkip() {
             this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
+            this.currentAnswer = this.createAnswerStructure()
         },
 
         onContinue() {
+            this.addToAnswers(this.currentAnswer)
             this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
+            this.currentAnswer = this.createAnswerStructure()
         },
 
         onClose() {
 
         },
+
+        onSelectRaitingWithTagsStar(star) {
+            this.currentAnswer.answer_data.raiting = star
+        },
+
+        onSelectRaitingWithTagsTag(tags) {
+            this.currentAnswer.answer_data.tags = tags
+        },
+
+        createAnswerStructure() {
+            return {
+                "survey_passing_id": this.servey.id,
+                "question_id": this.currentQuestionIndex,
+                "feedback": '',
+                "answer_data": {
+                    'raiting': null,
+                    'tags': [],
+                }
+            }
+        },
+
+        isAllDataAnswered() {
+            let answer = this.currentAnswer.answer_data
+            if (this.currentQuestion.id == 1) {
+                return answer.raiting && answer.tags.length
+            } 
+            return true
+        }
     }
 }
 </script>

@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         servey: null,
+        answers: [],
         loading: true,
     },
     actions,

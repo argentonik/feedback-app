@@ -20,6 +20,11 @@ const getById = ({commit}) => {
         })
     }
 
+const addToAnswers = ({commit}, answer) => {
+    commit('add_to_answers', answer)
+}
+
 export default {
     getById,
+    addToAnswers,
 }
