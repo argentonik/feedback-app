@@ -155,6 +155,7 @@ export default {
 
         onBack() {
             this.currentQuestion = this.servey.questions[--this.currentQuestionIndex]
+            this.currentAnswer = this.createAnswerStructure()
         },
 
         onSkip() {

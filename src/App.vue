@@ -54,6 +54,7 @@
     background-color: #FF5A5E;
     color: white;
     border-color: transparent;
+    cursor: pointer;
   }
 
   button.button, button.button:disabled {
@@ -61,5 +62,6 @@
     background-color: #FF5A5E;
     color: white;
     border-color: transparent;
+    cursor: default;
   }
 </style>

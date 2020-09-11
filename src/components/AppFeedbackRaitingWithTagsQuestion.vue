@@ -84,7 +84,7 @@ export default {
             if (this.disabled) {
                 return
             }
-            
+
             if (this.selectedTagsIndices.includes(index)) {
                 this.selectedTagsIndices = this.selectedTagsIndices.filter(item => item !== index)
                 this.selectedTags = this.selectedTags.filter(item => item !== tag)
@@ -139,6 +139,7 @@ export default {
         color: #FF5A5E;
         border-radius: 0;
         height: 35px;
+        cursor: pointer;
     }
 
     .star-options.selected .button {
