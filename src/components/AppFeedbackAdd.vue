@@ -7,19 +7,37 @@
                 placeholder="What did they do well at or what went wrong?"
                 type="textarea"
                 min="10"
+                v-model="feedback"
+                :disabled="disabled"
             ></b-input>
         </b-field>
 
-        <a @click="onBackClick" class="back-button">Back</a>
-        <a class="save-button">Save</a>
+        <a class="back-button" @click="onBack">Back</a>
+        <a class="save-button" @click="onSave">Save</a>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        defaultFeedback: {
+            type: String,
+            default: null,
+        }
+    },
+    data() {
+        return {
+            feedback: this.defaultFeedback ? this.defaultFeedback : null,
+            disabled: this.defaultFeedback ? true : false,
+        }
+    },
     methods: {
-        onBackClick() {
-            this.$emit('backButtonClick');
+        onBack() {
+            this.$emit('backButtonClick')
+        },
+
+        onSave() {
+            this.$emit('saveButtonClick', this.feedback)
         }
     }
 }

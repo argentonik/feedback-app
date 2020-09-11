@@ -43,7 +43,11 @@
                 class="container feedback-writing"
                 v-show="isWritingFeedback"
             >
-                <AppFeedbackAdd @backButtonClick="isWritingFeedback = false" />
+                <AppFeedbackAdd 
+                    :defaultFeedback="getFeedbackIfExist(currentQuestionIndex)"
+                    @backButtonClick="isWritingFeedback = false" 
+                    @saveButtonClick="onSaveFeedback"
+                />
             </div>
 
             <div 
@@ -126,6 +130,7 @@ export default {
             answers: 'surveys/answers',
             isAnswerExist: 'surveys/isAnswerExist',
             getAnswerIfExist: 'surveys/getAnswerIfExist',
+            getFeedbackIfExist: 'surveys/getFeedbackIfExist',
         }),
     },
 
@@ -171,6 +176,11 @@ export default {
 
         onClose() {
 
+        },
+
+        onSaveFeedback(feedback) {
+            this.isWritingFeedback = false
+            this.currentAnswer.feedback = feedback
         },
 
         onSelectRaitingWithTagsStar(star) {
