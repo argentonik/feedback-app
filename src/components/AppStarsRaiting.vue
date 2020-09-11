@@ -6,7 +6,7 @@
         <figure 
             v-for="n in 5" :key="n"
             :class="['image', 'column', 'star', `star-${n}`]"
-            @click="toogleStars(n)"
+            @click="toggleStars(n)"
         >
             <AppStar :ref="`star-${n}`" />
         </figure>
@@ -45,7 +45,7 @@ export default {
         }
     },
     methods: {
-        toogleStars(selectedStar) {
+        toggleStars(selectedStar) {
             let previousSelectedStar = this.$refs['star-'.concat(this.currentStar)]
             if (previousSelectedStar) {
                 for(let i = this.currentStar; i > 0; i--) {
@@ -55,13 +55,15 @@ export default {
 
             this.currentStar = selectedStar
             for(let i = selectedStar; i > 0; i--) {
-                if (selectedStar <= 3) {
+                if (selectedStar <= 1) {
                     this.$refs['star-'.concat(i)][0].selectedColor = 'black'
                 } else {
                     this.$refs['star-'.concat(i)][0].selectedColor = '#FF5A5E'
                 }
                 this.$refs['star-'.concat(i)][0].selected = true
             }
+
+            this.$emit('toggleStar', selectedStar)
         },
     }
 }

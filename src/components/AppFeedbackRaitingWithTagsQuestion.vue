@@ -2,40 +2,27 @@
     <div class="container">
         <AppFeedbackHeader class="title">{{ question.text }}</AppFeedbackHeader>
 
-        <p>{{ question.description }}</p>
+        <p v-if="!checkedStar">
+            {{ question.description }}
+        </p>
+        <p v-else>
+            {{getOptions().description}}
+        </p>
 
         <AppStarsRaiting 
             class="stars-raiting"
             size="33px"
             maxSize="39px"
+            @toggleStar="onToggleStar"
         />
 
-        <div class="columns is-mobile">
-            <div class="column star-options">
-                <div class="columns is-mobile">
-                    <div class="column">
-                        <b-button outlined>Text 1</b-button>
-                    </div>
-                    <div class="column">
-                        <b-button outlined>Text 2</b-button>
-                    </div>
-                </div>
-                <div class="columns is-mobile">
-                    <div class="column is-mobile">
-                        <b-button outlined>Text 3</b-button>
-                    </div>
-                    <div class="column">
-                        <b-button outlined>Text 4</b-button>
-                    </div>
-                </div>
-                <div class="columns is-mobile">
-                    <div class="column">
-                        <b-button outlined>Text 5</b-button>
-                    </div>
-                    <div class="column">
-                        <b-button outlined>Text 6</b-button>
-                    </div>
-                </div>
+        <div class="columns is-mobile is-multiline" v-if="checkedStar">
+            <div 
+                class="column is-half star-options"
+                v-for="(tag, i) in getOptions().tags"
+                :key="i"
+            >
+                <b-button outlined>{{ tag }}</b-button>
             </div>
         </div>
     </div>
@@ -56,6 +43,19 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            checkedStar: null,
+        }
+    },
+    methods: {
+        onToggleStar(star) {
+            this.checkedStar = star
+        },
+        getOptions() {
+            return this.checkedStar <= 3 ? this.question.options['3'] : this.question.options['5']
+        },
+    }
 }
 </script>
 
