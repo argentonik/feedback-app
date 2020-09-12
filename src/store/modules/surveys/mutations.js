@@ -74,7 +74,7 @@ const set_answer_tags = (state, tags) => {
 }
 
 const set_answer_raiting_with_indicator = (state, raitingData) => {
-    const oldRaitingData = state.currentAnswer.answer_data.find(
+    let oldRaitingData = state.currentAnswer.answer_data.find(
         raiting => raiting.indicator === raitingData.indicator)
     if (oldRaitingData) {
         Object.assign(oldRaitingData, raitingData)
@@ -83,13 +83,20 @@ const set_answer_raiting_with_indicator = (state, raitingData) => {
     }
 }
 
+const set_answer_grade = (state, grade) => {
+    state.currentAnswer.answer_data.value = grade
+}
+
 const set_is_all_question_data_answered = (state) => {
     let answer = state.currentAnswer.answer_data
-    if (state.currentQuestion.id == 1) {
+
+    if (state.currentQuestion.type.id == 1) {
         state.isAllQuestionDataAnswered = answer.raiting && answer.tags.length
-    } else if (state.currentQuestion.id == 2) {
+    } else if (state.currentQuestion.type.id == 2) {
         state.isAllQuestionDataAnswered = 
             state.currentAnswer.answer_data.length === state.currentQuestion.options.indicators.length
+    } else if (state.currentQuestion.type.id == 3) {
+        state.isAllQuestionDataAnswered = state.currentAnswer.answer_data.value != null
     } else {
         state.isAllQuestionDataAnswered = true
     }
@@ -114,4 +121,5 @@ export default {
     set_answer_raiting,
     set_answer_tags,
     set_answer_raiting_with_indicator,
+    set_answer_grade,
 }

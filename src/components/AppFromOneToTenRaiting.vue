@@ -2,7 +2,7 @@
     <div class="grades">
         <div class="columns is-mobile is-centered">
             <div 
-                :class="['column', 'grade', `grade-${i}`]" 
+                :class="['column', 'grade', `grade-${i}`, disabled ? 'grade-disabled' : '']" 
                 v-for="(n, i) in 6" :key="i"
                 @click="onClickGrade(i)"
             >
@@ -14,7 +14,7 @@
 
         <div class="columns is-mobile is-centered">
             <div 
-                :class="['column', 'grade', `grade-${i + 6}`]" 
+                :class="['column', 'grade', `grade-${i + 6}`, disabled ? 'grade-disabled' : '']" 
                 v-for="(n, i) in 5" 
                 :key="i + 6"
                 @click="onClickGrade(i + 6)"
@@ -29,13 +29,29 @@
 
 <script>
 export default {
+    props: {
+        defaultGrade: {
+            default: null,
+        }
+    },
     data() {
         return {
             currentGrade: -1,
+            disabled: this.defaultGrade != null
+        }
+    },
+    mounted() {
+        if (this.defaultGrade) {
+            this.currentGrade = this.defaultGrade
+            this.$el.querySelector('.grade-'.concat(this.currentGrade)).classList.add('selected')
         }
     },
     methods: {
         onClickGrade(i) {
+            if (this.disabled) {
+                return
+            }
+
             let previousSelectedGrade = this.$el.querySelector('.grade-'.concat(this.currentGrade))
             if (previousSelectedGrade) {
                 previousSelectedGrade.classList.remove('selected')
@@ -43,6 +59,8 @@ export default {
             
             this.currentGrade = i
             this.$el.querySelector('.grade-'.concat(i)).classList.add('selected')
+
+            this.$emit('selectGrade', i)
         }
     },
 }
@@ -79,5 +97,9 @@ export default {
         text-align: right;
         margin-top: -10px;
         margin-right: 40px;
+    }
+
+    .grade-disabled {
+        cursor: default;
     }
 </style>

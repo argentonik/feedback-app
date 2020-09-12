@@ -34,6 +34,7 @@ const incrementCurrentQuestionIndex = ({commit, getters}) => {
     } else {
         commit('set_base_answer_structure')
     }
+    commit('set_is_all_question_data_answered')
 }
 
 const decrementCurrentQuestionIndex = ({commit, getters}) => {
@@ -47,6 +48,7 @@ const decrementCurrentQuestionIndex = ({commit, getters}) => {
     } else {
         commit('set_base_answer_structure')
     }
+    commit('set_is_all_question_data_answered')
 }
 
 const addToAnswersCurrentAnswer = ({commit, getters}) => {
@@ -72,6 +74,11 @@ const setAnswerRaitingWithIndicator = ({commit}, raitingData) => {
     commit('set_is_all_question_data_answered')
 }
 
+const setAnswerGrade = ({commit}, grade) => {
+    commit('set_answer_grade', grade)
+    commit('set_is_all_question_data_answered')
+}
+
 export default {
     getById,
 
@@ -83,4 +90,5 @@ export default {
     setAnswerRaiting,
     setAnswerTags,
     setAnswerRaitingWithIndicator,
+    setAnswerGrade,
 }

@@ -4,7 +4,10 @@
             {{ question.text }}
         </AppFeedbackHeader>
 
-        <AppFromOneToTenRaiting />
+        <AppFromOneToTenRaiting 
+            :defaultGrade="answer.value"
+            @selectGrade="onSelectGrade" 
+        />
     </div>
 </template>
 
@@ -22,6 +25,15 @@ export default {
             type: Object,
             required: true,
         },
+        answer: {
+            type: Object,
+            default: null,
+        }
+    },
+    methods: {
+        onSelectGrade(i) {
+            this.$emit('selectValue', i)
+        }
     },
 }
 </script>

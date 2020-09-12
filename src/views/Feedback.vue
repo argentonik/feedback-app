@@ -61,13 +61,17 @@
                     @selectTag="onSelectRaitingWithTagsTag"
                     v-if="currentQuestion.type.id == 1"
                 />
+
                 <AppFeedbackMultiRaitingQuestion 
                     :question="currentQuestion"
                     :answer="currentAnswer.answer_data"
                     @selectRaiting="onSelectMultiRaitingItem"
                     v-else-if="currentQuestion.type.id == 2"/>
-                <AppFeedbackScaleQuestion 
+
+                <AppFeedbackGradeQuestion 
                     :question="currentQuestion"
+                    :answer="currentAnswer.answer_data"
+                    @selectValue="onSelectGrade"
                     v-else-if="currentQuestion.type.id == 3"/>
                 <AppFeedbackFinish v-else />
 
@@ -99,7 +103,7 @@ import AppFeedbackAdd from '../components/AppFeedbackAdd'
 
 import AppFeedbackRaitingWithTagsQuestion from '../components/AppFeedbackRaitingWithTagsQuestion'
 import AppFeedbackMultiRaitingQuestion from '../components/AppFeedbackMultiRaitingQuestion'
-import AppFeedbackScaleQuestion from '../components/AppFeedbackScaleQuestion'
+import AppFeedbackGradeQuestion from '../components/AppFeedbackGradeQuestion'
 
 import AppFeedbackFinish from '../components/AppFeedbackFinish'
 
@@ -110,7 +114,7 @@ export default {
         AppFeedbackAdd,
         AppFeedbackRaitingWithTagsQuestion,
         AppFeedbackMultiRaitingQuestion,
-        AppFeedbackScaleQuestion,
+        AppFeedbackGradeQuestion,
         AppFeedbackFinish,
     },
 
@@ -163,6 +167,7 @@ export default {
             setAnswerRaiting: 'surveys/setAnswerRaiting',
             setAnswerTags: 'surveys/setAnswerTags',
             setAnswerRaitingWithIndicator: 'surveys/setAnswerRaitingWithIndicator',
+            setAnswerGrade: 'surveys/setAnswerGrade'
         }),
 
         onBack() {
@@ -197,6 +202,10 @@ export default {
 
         onSelectMultiRaitingItem(raitingData) {
             this.setAnswerRaitingWithIndicator(raitingData)
+        },
+
+        onSelectGrade(grade) {
+            this.setAnswerGrade(grade)
         }
     }
 }
