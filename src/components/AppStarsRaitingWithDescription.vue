@@ -7,6 +7,8 @@
             <AppStarsRaiting
                 size="20px"
                 maxSize="23px"
+                :defaultValue="this.raiting ? this.raiting : null"
+                @toggleStar="onToggleStar"
             />
         </div>
     </div>
@@ -20,13 +22,21 @@ export default {
         AppStarsRaiting,
     },
     props: {
-        stars: {
+        raiting: {
             type: Number,
             required: false,
         },
         description: {
             type: String,
             required: true,
+        }
+    },
+    methods: {
+        onToggleStar(star) {
+            this.$emit('selectStar', {
+                raiting: star, 
+                indicator: this.description,
+            })
         }
     }
 }

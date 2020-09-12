@@ -28,8 +28,12 @@ const set_current_question = (state, index) => {
     state.currentQuestion = state.servey.questions[index]
 }
 
-const add_to_answers = (state, answer) => {
-    state.answers.push(answer)
+const add_to_answers = (state, newAnswer) => {
+    let existAnswer = state.answers.find(
+        answer => answer.question_id === newAnswer.question_id)
+    if (!existAnswer) {
+        state.answers.push(newAnswer)
+    }
 }
 
 const set_base_answer_structure = (state) => {
@@ -47,10 +51,7 @@ const set_base_answer_structure = (state) => {
             }
             break
         case 2:
-            state.currentAnswer.answer_data = {
-                indicator: '',
-                raiting: null,
-            }
+            state.currentAnswer.answer_data = []
             break
         case 3:
             state.currentAnswer.answer_data = {
@@ -72,10 +73,23 @@ const set_answer_tags = (state, tags) => {
     state.currentAnswer.answer_data.tags = tags
 }
 
+const set_answer_raiting_with_indicator = (state, raitingData) => {
+    const oldRaitingData = state.currentAnswer.answer_data.find(
+        raiting => raiting.indicator === raitingData.indicator)
+    if (oldRaitingData) {
+        Object.assign(oldRaitingData, raitingData)
+    } else {
+        state.currentAnswer.answer_data.push(raitingData)
+    }
+}
+
 const set_is_all_question_data_answered = (state) => {
     let answer = state.currentAnswer.answer_data
     if (state.currentQuestion.id == 1) {
         state.isAllQuestionDataAnswered = answer.raiting && answer.tags.length
+    } else if (state.currentQuestion.id == 2) {
+        state.isAllQuestionDataAnswered = 
+            state.currentAnswer.answer_data.length === state.currentQuestion.options.indicators.length
     } else {
         state.isAllQuestionDataAnswered = true
     }
@@ -99,4 +113,5 @@ export default {
     set_base_answer_structure,
     set_answer_raiting,
     set_answer_tags,
+    set_answer_raiting_with_indicator,
 }

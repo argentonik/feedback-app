@@ -63,6 +63,8 @@
                 />
                 <AppFeedbackMultiRaitingQuestion 
                     :question="currentQuestion"
+                    :answer="currentAnswer.answer_data"
+                    @selectRaiting="onSelectMultiRaitingItem"
                     v-else-if="currentQuestion.type.id == 2"/>
                 <AppFeedbackScaleQuestion 
                     :question="currentQuestion"
@@ -160,6 +162,7 @@ export default {
             setBaseAnswerStructure: 'surveys/setBaseAnswerStructure',
             setAnswerRaiting: 'surveys/setAnswerRaiting',
             setAnswerTags: 'surveys/setAnswerTags',
+            setAnswerRaitingWithIndicator: 'surveys/setAnswerRaitingWithIndicator',
         }),
 
         onBack() {
@@ -191,6 +194,10 @@ export default {
         onSelectRaitingWithTagsTag(tags) {
             this.setAnswerTags(tags)
         },
+
+        onSelectMultiRaitingItem(raitingData) {
+            this.setAnswerRaitingWithIndicator(raitingData)
+        }
     }
 }
 </script>

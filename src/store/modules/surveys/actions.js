@@ -67,6 +67,11 @@ const setAnswerTags = ({commit}, tags) => {
     commit('set_is_all_question_data_answered')
 }
 
+const setAnswerRaitingWithIndicator = ({commit}, raitingData) => {
+    commit('set_answer_raiting_with_indicator', raitingData)
+    commit('set_is_all_question_data_answered')
+}
+
 export default {
     getById,
 
@@ -77,4 +82,5 @@ export default {
     setBaseAnswerStructure,
     setAnswerRaiting,
     setAnswerTags,
+    setAnswerRaitingWithIndicator,
 }
