@@ -5,7 +5,7 @@
     >
         <figure 
             v-for="n in 5" :key="n"
-            :class="['image', 'column', 'star', `star-${n}`]"
+            :class="['image', 'column', 'star', `star-${n}`, disabled ? 'star-disabled' : '']"
             @click="toggleStars(n)"
         >
             <AppStar :ref="`star-${n}`" />
@@ -95,5 +95,9 @@ export default {
         height: var(--star-height);
         width: var(--star-width);
         cursor: pointer;
+    }
+
+    .star.star-disabled svg {
+        cursor: default;
     }
 </style>
