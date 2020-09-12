@@ -24,7 +24,7 @@
                 :key="i"
                 @click="onStarOptionClick(i, tag)"
             >
-                <b-button :disabled="isAlreadyExistAnswer()" outlined>{{ tag }}</b-button>
+                <b-button :disabled="disabled" outlined>{{ tag }}</b-button>
             </div>
         </div>
     </div>
@@ -54,18 +54,20 @@ export default {
             checkedStar: this.answer ? this.answer.raiting : null,
             selectedTags: this.answer ? this.answer.tags : [],
             selectedTagsIndices: [],
-            disabled: this.answer ? true : false,
+            disabled: false,
         }
     },
     mounted() {
         // select options from answer if passed default answer
         if (this.answer && this.selectedTags.length) {
+            this.disabled = true
             this.$el.querySelectorAll('.star-options').forEach(starOption => {
                 if (this.selectedTags.includes(starOption.firstElementChild.textContent)) {
                     starOption.classList.add('selected')
                 }
             })
         }
+        console.log(this)
     },
     methods: {
         onToggleStar(star) {
@@ -111,7 +113,7 @@ export default {
         },
 
         isAlreadyExistAnswer() {
-            return this.answer ? true : false;
+            return this.answer && this.checkedStar && this.selectedTags ? true : false
         }
     }
 }

@@ -11,6 +11,9 @@ const getById = ({commit}) => {
                 console.log(resp.data)
                 commit('set_servey', resp.data)
                 commit('end_loading')
+                commit('set_total_questions')
+                commit('set_current_question', 0)
+                commit('set_base_answer_structure')
                 resolve(resp.data)
             })
             .catch(error => {
@@ -20,11 +23,58 @@ const getById = ({commit}) => {
         })
     }
 
-const addToAnswers = ({commit}, answer) => {
-    commit('add_to_answers', answer)
+const incrementCurrentQuestionIndex = ({commit, getters}) => {
+    commit('increment_current_question_index')
+    let answer = getters.answers.filter(answer => {
+        return answer.question_id === getters.currentQuestionIndex
+    })
+
+    if (answer.length) {
+        commit('set_answer', answer[0])
+    } else {
+        commit('set_base_answer_structure')
+    }
+}
+
+const decrementCurrentQuestionIndex = ({commit, getters}) => {
+    commit('decrement_current_question_index')
+    let answer = getters.answers.filter(answer => {
+        return answer.question_id === getters.currentQuestionIndex
+    })
+
+    if (answer.length) {
+        commit('set_answer', answer[0])
+    } else {
+        commit('set_base_answer_structure')
+    }
+}
+
+const addToAnswersCurrentAnswer = ({commit, getters}) => {
+    commit('add_to_answers', getters.currentAnswer)
+}
+
+const setBaseAnswerStructure = ({commit}) => {
+    commit('set_base_answer_structure')
+}
+
+const setAnswerRaiting = ({commit}, raiting) => {
+    commit('set_answer_raiting', raiting)
+    commit('set_is_all_question_data_answered')
+}
+
+const setAnswerTags = ({commit}, tags) => {
+    commit('set_answer_tags', tags)
+    commit('set_is_all_question_data_answered')
 }
 
 export default {
     getById,
-    addToAnswers,
+
+    incrementCurrentQuestionIndex,
+    decrementCurrentQuestionIndex,
+
+    addToAnswersCurrentAnswer,
+    setBaseAnswerStructure,
+    setAnswerRaiting,
+    setAnswerTags,
 }

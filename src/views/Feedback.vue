@@ -56,7 +56,7 @@
             >
                 <AppFeedbackRaitingWithTagsQuestion 
                     :question="currentQuestion"
-                    :answer="getAnswerIfExist(currentQuestionIndex)"
+                    :answer="currentAnswer.answer_data"
                     @selectStar="onSelectRaitingWithTagsStar"
                     @selectTag="onSelectRaitingWithTagsTag"
                     v-if="currentQuestion.type.id == 1"
@@ -83,7 +83,7 @@
             <div class="buttons">
                 <b-button 
                     @click="onContinue" 
-                    :disabled="!isAllDataAnswered() && !isAnswerExist(currentQuestionIndex)"
+                    :disabled="!isAllQuestionDataAnswered && !isAnswerExist(currentQuestionIndex)"
                     v-if="currentQuestionIndex <= totalQuestions - 1"
                 > Continue</b-button>
                 <b-button @click="onClose" v-else>Close</b-button>
@@ -114,10 +114,6 @@ export default {
 
     data() {
         return {
-            currentQuestionIndex: 0,
-            currentQuestion: null,
-            currentAnswer: null,
-            totalQuestions: null,
             isWritingFeedback: false,
             progress: 0,
             progressStep: 0,
@@ -127,7 +123,14 @@ export default {
     computed: {
         ...mapGetters({
             servey: 'surveys/servey',
+
+            currentQuestionIndex: 'surveys/currentQuestionIndex',
+            currentQuestion: 'surveys/currentQuestion',
+            totalQuestions: 'surveys/totalQuestions',
+            isAllQuestionDataAnswered: 'surveys/isAllQuestionDataAnswered',
+
             answers: 'surveys/answers',
+            currentAnswer: 'surveys/currentAnswer',
             isAnswerExist: 'surveys/isAnswerExist',
             getAnswerIfExist: 'surveys/getAnswerIfExist',
             getFeedbackIfExist: 'surveys/getFeedbackIfExist',
@@ -137,41 +140,39 @@ export default {
     watch: {
         currentQuestionIndex(index) {
             this.progress = (index + 1) * this.progressStep
-        }
+        },
     },
 
     mounted() {
         this.getServeyById().then(() => {
-            this.currentQuestion = this.servey.questions[0]
-            this.currentQuestionIndex = 0
-            this.totalQuestions = this.servey.questions.length
             this.progressStep = 100 / this.totalQuestions
             this.progress = this.progressStep
-
-            this.currentAnswer = this.createAnswerStructure()
         })
     },
-
     methods: {
         ...mapActions({
             getServeyById: 'surveys/getById',
-            addToAnswers: 'surveys/addToAnswers',
+
+            incrementCurrentQuestionIndex: 'surveys/incrementCurrentQuestionIndex',
+            decrementCurrentQuestionIndex: 'surveys/decrementCurrentQuestionIndex',
+
+            addToAnswersCurrentAnswer: 'surveys/addToAnswersCurrentAnswer',
+            setBaseAnswerStructure: 'surveys/setBaseAnswerStructure',
+            setAnswerRaiting: 'surveys/setAnswerRaiting',
+            setAnswerTags: 'surveys/setAnswerTags',
         }),
 
         onBack() {
-            this.currentQuestion = this.servey.questions[--this.currentQuestionIndex]
-            this.currentAnswer = this.createAnswerStructure()
+            this.decrementCurrentQuestionIndex()
         },
 
         onSkip() {
-            this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
-            this.currentAnswer = this.createAnswerStructure()
+            this.incrementCurrentQuestionIndex()
         },
 
         onContinue() {
-            this.addToAnswers(this.currentAnswer)
-            this.currentQuestion = this.servey.questions[++this.currentQuestionIndex]
-            this.currentAnswer = this.createAnswerStructure()
+            this.addToAnswersCurrentAnswer()
+            this.incrementCurrentQuestionIndex()
         },
 
         onClose() {
@@ -184,32 +185,12 @@ export default {
         },
 
         onSelectRaitingWithTagsStar(star) {
-            this.currentAnswer.answer_data.raiting = star
+            this.setAnswerRaiting(star)
         },
 
         onSelectRaitingWithTagsTag(tags) {
-            this.currentAnswer.answer_data.tags = tags
+            this.setAnswerTags(tags)
         },
-
-        createAnswerStructure() {
-            return {
-                "survey_passing_id": this.servey.id,
-                "question_id": this.currentQuestionIndex,
-                "feedback": '',
-                "answer_data": {
-                    'raiting': null,
-                    'tags': [],
-                }
-            }
-        },
-
-        isAllDataAnswered() {
-            let answer = this.currentAnswer.answer_data
-            if (this.currentQuestion.id == 1) {
-                return answer.raiting && answer.tags.length
-            } 
-            return true
-        }
     }
 }
 </script>
