@@ -22,13 +22,22 @@ export default {
     props: {
         defaultFeedback: {
             type: String,
-            default: null,
+            default: '',
+        },
+        isDisabled: {
+            type: Boolean,
+            default: false,
         }
     },
     data() {
         return {
-            feedback: this.defaultFeedback ? this.defaultFeedback : null,
-            disabled: this.defaultFeedback ? true : false,
+            feedback: this.defaultFeedback ? this.defaultFeedback : '',
+            disabled: this.defaultFeedback || this.isDisabled ? true : false,
+        }
+    },
+    mounted(){
+        if (this.disabled) {
+            this.$el.querySelector('.save-button').classList.add('disable')
         }
     },
     methods: {
@@ -37,6 +46,9 @@ export default {
         },
 
         onSave() {
+            if (this.disabled) {
+                return
+            }
             this.$emit('saveButtonClick', this.feedback)
         }
     }
@@ -71,5 +83,9 @@ export default {
         display: inline-block;
         margin-right: 2rem;
         margin-bottom: 1rem;
+    }
+
+    .disable {
+        cursor: default;
     }
 </style>

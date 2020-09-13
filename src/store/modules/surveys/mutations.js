@@ -65,6 +65,10 @@ const set_answer = (state, answer) => {
     state.currentAnswer = answer
 }
 
+const set_feedback_to_answer = (state, feedback) => {
+    state.currentAnswer.feedback = feedback
+}
+
 const set_answer_raiting = (state, raiting) => {
     state.currentAnswer.answer_data.raiting = raiting
 }
@@ -118,6 +122,7 @@ export default {
     add_to_answers,
     set_answer,
     set_base_answer_structure,
+    set_feedback_to_answer,
     set_answer_raiting,
     set_answer_tags,
     set_answer_raiting_with_indicator,

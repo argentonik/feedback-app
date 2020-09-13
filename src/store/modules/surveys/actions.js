@@ -59,6 +59,10 @@ const setBaseAnswerStructure = ({commit}) => {
     commit('set_base_answer_structure')
 }
 
+const setFeedbackToAnswer = ({commit}, feedback) => {
+    commit('set_feedback_to_answer', feedback)
+}
+
 const setAnswerRaiting = ({commit}, raiting) => {
     commit('set_answer_raiting', raiting)
     commit('set_is_all_question_data_answered')
@@ -87,6 +91,7 @@ export default {
 
     addToAnswersCurrentAnswer,
     setBaseAnswerStructure,
+    setFeedbackToAnswer,
     setAnswerRaiting,
     setAnswerTags,
     setAnswerRaitingWithIndicator,

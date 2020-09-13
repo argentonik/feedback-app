@@ -44,9 +44,11 @@
                 v-show="isWritingFeedback"
             >
                 <AppFeedbackAdd 
-                    :defaultFeedback="getFeedbackIfExist(currentQuestionIndex)"
+                    :defaultFeedback="isDefaultFeedback ? currentAnswer.feedback : ''"
+                    :isDisabled="isAnswerExist(currentQuestionIndex)"
                     @backButtonClick="isWritingFeedback = false" 
                     @saveButtonClick="onSaveFeedback"
+                    :key="currentQuestionIndex"
                 />
             </div>
 
@@ -120,6 +122,7 @@ export default {
 
     data() {
         return {
+            isDefaultFeedback: '',
             isWritingFeedback: false,
             progress: 0,
             progressStep: 0,
@@ -146,6 +149,8 @@ export default {
     watch: {
         currentQuestionIndex(index) {
             this.progress = (index + 1) * this.progressStep
+            this.isDefaultFeedback = this.currentAnswer.feedback ? true : false
+            this.isWritingFeedback = false
         },
     },
 
@@ -164,6 +169,7 @@ export default {
 
             addToAnswersCurrentAnswer: 'surveys/addToAnswersCurrentAnswer',
             setBaseAnswerStructure: 'surveys/setBaseAnswerStructure',
+            setFeedbackToAnswer: 'surveys/setFeedbackToAnswer',
             setAnswerRaiting: 'surveys/setAnswerRaiting',
             setAnswerTags: 'surveys/setAnswerTags',
             setAnswerRaitingWithIndicator: 'surveys/setAnswerRaitingWithIndicator',
@@ -189,7 +195,7 @@ export default {
 
         onSaveFeedback(feedback) {
             this.isWritingFeedback = false
-            this.currentAnswer.feedback = feedback
+            this.setFeedbackToAnswer(feedback)
         },
 
         onSelectRaitingWithTagsStar(star) {
@@ -206,7 +212,7 @@ export default {
 
         onSelectGrade(grade) {
             this.setAnswerGrade(grade)
-        }
+        },
     }
 }
 </script>
