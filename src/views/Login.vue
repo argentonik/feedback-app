@@ -16,7 +16,13 @@
                 </b-field>
 
                 <b-field>
-                    <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
+                    <b-input 
+                        :key="passwordType"
+                        v-if="passwordType" 
+                        v-model="password" 
+                        type="password" 
+                        placeholder="Enter your password"></b-input>
+                    <b-input v-else v-model="password" type="text" placeholder="Enter your password"></b-input>
                 </b-field>
 
                 <div class="columns is-mobile">
@@ -27,7 +33,7 @@
                     </div>
 
                     <div class="column show-password">
-                        <a link="#">Show password</a>
+                        <a @click="onPasswordTypeSwitch">{{ passwordSwitchLabel }}</a>
                     </div>
                 </div>
 
@@ -51,6 +57,8 @@ export default {
         return {
             email : "",
             password : "",
+            passwordType: true,
+            passwordSwitchLabel: 'Show password',
         }
     },
     methods: {
@@ -69,6 +77,12 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+        },
+
+        onPasswordTypeSwitch() {
+            this.passwordType = !this.passwordType
+            this.passwordSwitchLabel = this.passwordSwitchLabel == 'Show password' 
+                ? 'Hide password' : 'Show password'
         }
     }
 }
