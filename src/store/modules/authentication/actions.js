@@ -34,6 +34,19 @@ const register = ({commit}, user) => {
         })
     }
 
+const emailVerify = ({commit}, verifyData) => {
+    console.log(commit)
+    return new Promise((resolve, reject) => {
+        axios.post('/email/verify', verifyData)
+            .then(resp => {
+                resolve(resp)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
 const logout = ({commit}) => {
     return new Promise((resolve, reject) => {
         axios.post('/api/logout')
@@ -52,5 +65,6 @@ const logout = ({commit}) => {
 export default {
     login,
     register,
+    emailVerify,
     logout,
 };

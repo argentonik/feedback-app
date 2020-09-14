@@ -61,20 +61,21 @@
                     :answer="currentAnswer.answer_data"
                     @selectStar="onSelectRaitingWithTagsStar"
                     @selectTag="onSelectRaitingWithTagsTag"
-                    v-if="currentQuestion.type.id == 1"
+                    v-if="currentQuestion && currentQuestion.type.id == 1"
                 />
 
                 <AppFeedbackMultiRaitingQuestion 
                     :question="currentQuestion"
                     :answer="currentAnswer.answer_data"
                     @selectRaiting="onSelectMultiRaitingItem"
-                    v-else-if="currentQuestion.type.id == 2"/>
+                    v-else-if="currentQuestion && currentQuestion.type.id == 2"/>
 
                 <AppFeedbackGradeQuestion 
                     :question="currentQuestion"
                     :answer="currentAnswer.answer_data"
                     @selectValue="onSelectGrade"
-                    v-else-if="currentQuestion.type.id == 3"/>
+                    v-else-if="currentQuestion && currentQuestion.type.id == 3"/>
+
                 <AppFeedbackFinish v-else />
 
                 <a 
