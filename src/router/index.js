@@ -9,39 +9,39 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
-  const routes = [
-  { 
-    path: '/', 
-    redirect: '/feedback' 
-  },
-  {
-    path: '/feedback',
-    name: 'Feedback',
-    component: Feedback,
-    meta: { 
-        requiresAuth: true
+const routes = [
+    { 
+        path: '/', 
+        redirect: '/feedback' 
+    },
+    {
+        path: '/feedback',
+        name: 'Feedback',
+        component: Feedback,
+        meta: { 
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+    },
+    {
+        path: '/signup',
+        name: 'SignUp',
+        component: SignUp,
+    },
+    {
+        path: '/signup/success',
+        name: 'SignUpSuccess',
+        component: SignUpSuccess,
+    },
+    {
+        path: '/email/verify/:id/:hash',
+        name: 'EmailVerify',
+        component: EmailVerify,
     }
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp,
-  },
-  {
-    path: '/signup/success',
-    name: 'SignUpSuccess',
-    component: SignUpSuccess,
-  },
-  {
-    path: '/email/verify/:id/:hash',
-    name: 'EmailVerify',
-    component: EmailVerify,
-  }
 ]
 
 const router = new VueRouter({
@@ -51,15 +51,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-      if (store.getters['authentication/isLoggedIn']) {
-          next()
-          return
-      }
-      next('/login') 
-  } else {
-      next() 
-  }
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters['authentication/isLoggedIn']) {
+                next()
+                return
+        }
+        next('/login') 
+    } else {
+        next() 
+    }
 })
 
 export default router

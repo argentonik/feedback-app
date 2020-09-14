@@ -49,7 +49,7 @@ const emailVerify = ({commit}, verifyData) => {
 
 const logout = ({commit}) => {
     return new Promise((resolve, reject) => {
-        axios.post('/api/logout')
+        axios.post('/auth/logout')
             .then(() => {
                 commit('logout')
                 localStorage.removeItem('token')

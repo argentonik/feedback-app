@@ -1,9 +1,10 @@
 import axios from 'axios'
+import router from '../../../router'
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 const SERVEY_ID = 1
 
-const getById = ({commit}) => {
+const getById = ({commit, dispatch, getters}) => {
     return new Promise((resolve, reject) => {
         commit('start_loading')
         axios.get('/surveys/'.concat(SERVEY_ID).concat('?include=questions'))
@@ -18,6 +19,13 @@ const getById = ({commit}) => {
             })
             .catch(error => {
                 commit('end_loading')
+                const {status} = error.response;
+                if (status === 401) {
+                    if (getters['authentication/isLoggedIn']) {
+                        dispatch('authentication/logout')
+                    }
+                    router.push('/login')
+                }
                 reject(error.response)
             })
         })
