@@ -26,11 +26,17 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login,
+        meta: {
+            hideForAuth: true
+        }
     },
     {
         path: '/signup',
         name: 'SignUp',
         component: SignUp,
+        meta: {
+            hideForAuth: true
+        }
     },
     {
         path: '/signup/success',
@@ -53,12 +59,22 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters['authentication/isLoggedIn']) {
-                next()
-                return
+            next()
+            return
         }
         next('/login') 
     } else {
         next() 
+    }
+
+    if (to.matched.some(record => record.meta.hideForAuth)) {
+        if (store.getters['authentication/isLoggedIn']) {
+            next({ path: '/' });
+        } else {
+            next();
+        }
+    } else {
+        next();
     }
 })
 

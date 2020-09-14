@@ -35,7 +35,7 @@
 
                 <p>Already have an account? <router-link to="/">Log in</router-link></p>
 
-                <p>Need help or have a question, <a link="#">get in touch</a>.</p>
+                <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
             </form>
         </div>
     </div>
@@ -62,7 +62,7 @@ export default {
 
             this.register({email, password})
                 .then(() => {
-                    this.$router.push('/')
+                    this.$router.push('signup/success')
                 })
                 .catch(error => {
                     console.log(error)

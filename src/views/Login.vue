@@ -37,7 +37,7 @@
 
                 <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
 
-                <p>Need help or have a question, <a link="#">get in touch</a>.</p>
+                <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
             </form>
         </div>
     </div>
