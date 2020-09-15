@@ -2,9 +2,8 @@ import actions from './actions';
 import mutations from './mutations';
 import getters from './getters';
 
-export default {
-    namespaced: true,
-    state: {
+const getDefaultState = () => {
+    return {
         servey: null,
         survey_passing_id: null,
 
@@ -16,8 +15,18 @@ export default {
         answers: [],
         currentAnswer: null,
         loading: true,
-    },
-    actions,
-    mutations,
-    getters,
+    } 
 }
+
+export default {
+    namespaced: true,
+    state: getDefaultState(),
+    actions,
+    mutations: {
+        ...mutations,
+        resetState(state) {
+            Object.assign(state, getDefaultState())
+        },
+    },
+    getters,
+}    

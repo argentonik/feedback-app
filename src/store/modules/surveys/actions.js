@@ -125,6 +125,10 @@ const setAnswerGrade = ({commit}, grade) => {
     commit('set_is_all_question_data_answered')
 }
 
+const resetServeyState = ({ commit }) => {
+    commit('resetState')
+}
+
 export default {
     getById,
     getAnswers,
@@ -140,4 +144,6 @@ export default {
     setAnswerTags,
     setAnswerRaitingWithIndicator,
     setAnswerGrade,
+
+    resetServeyState,
 }

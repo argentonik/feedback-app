@@ -1,7 +1,7 @@
 <template>
     <div 
         class="feedback-view container"
-        v-if="loadedAnswers"
+        v-if="servey && loadedAnswers"
     >
         <div class="level is-mobile">
             <div class="level-left">
@@ -179,7 +179,10 @@ export default {
             setAnswerRaiting: 'surveys/setAnswerRaiting',
             setAnswerTags: 'surveys/setAnswerTags',
             setAnswerRaitingWithIndicator: 'surveys/setAnswerRaitingWithIndicator',
-            setAnswerGrade: 'surveys/setAnswerGrade'
+            setAnswerGrade: 'surveys/setAnswerGrade',
+
+            logout: 'authentication/logout',
+            resetServeyState: 'surveys/resetServeyState',
         }),
 
         onBack() {
@@ -201,7 +204,10 @@ export default {
         },
 
         onClose() {
-
+            this.logout().then(() => {
+                this.$router.push({ name: 'Login' })
+            })
+            this.resetServeyState()
         },
 
         onSaveFeedback(feedback) {

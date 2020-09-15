@@ -45,10 +45,15 @@ const add_to_answers = (state, newAnswer) => {
 }
 
 const set_base_answer_structure = (state) => {
+    if (!state.currentQuestion) {
+        return
+    }
+
     state.currentAnswer = {
         question_id: state.currentQuestionIndex + 1,
         feedback: '',
     }
+
     if (state.survey_passing_id) {
         state.currentAnswer.survey_passing_id = state.survey_passing_id
     }
@@ -102,6 +107,10 @@ const set_answer_grade = (state, grade) => {
 }
 
 const set_is_all_question_data_answered = (state) => {
+    if (!state.currentQuestion) {
+        return true
+    }
+    
     let answer = state.currentAnswer.answer_data
 
     if (state.currentQuestion.type.id == 1) {
