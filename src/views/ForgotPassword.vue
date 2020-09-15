@@ -2,41 +2,30 @@
     <div class="container">
         <div class="container">
             <h1 class="login-title">
-                Create an account
+                Change password
             </h1>
         </div>
 
         <div class="container">
             <form
                 method="POST" 
-                @submit.prevent="onRegister"
+                @submit.prevent="onSubmit"
+                v-if="!this.send"
             >
                 <b-field>
                     <b-input v-model="email" placeholder="Enter your email"></b-input>
                 </b-field>
 
-                <b-field>
-                    <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
-                </b-field>
-
-                <div class="columns">
-                    <div class="column remember-me">
-                        <b-field>
-                            <b-checkbox>Remember me</b-checkbox>
-                        </b-field>
-                    </div>
-
-                    <div class="column show-password">
-                        <a link="#">Show password</a>
-                    </div>
-                </div>
-
-                <b-button native-type="submit">Register</b-button>
+                <b-button native-type="submit">Send letter to change password</b-button>
 
                 <p>Already have an account? <router-link to="/">Log in</router-link></p>
 
                 <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
             </form>
+
+            <div :class="['message', success ? 'success' : 'failed']" v-else>
+                <p>{{this.message}}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -48,24 +37,29 @@ export default {
     data() {
         return {
             email : "",
-            password : "",
+            send: false,
+            message: '',
+            success: false,
         }
     },
       methods: {
         ...mapActions({
-            register: 'authentication/register'
+            sendEmailForResetPassword: 'authentication/sendEmailForResetPassword'
         }),
 
-        onRegister: function () {
+        onSubmit: function () {
             let email = this.email
-            let password = this.password
 
-            this.register({email, password})
-                .then(() => {
-                    this.$router.push('signup/success')
+            this.sendEmailForResetPassword({email})
+                .then((resp) => {
+                    this.send = true
+                    this.success = true
+                    this.message = resp.data.message
                 })
                 .catch(error => {
-                    console.log(error)
+                    this.send = true
+                    this.success = false
+                    this.message = error.response.data.message
                 })
         }
     }
@@ -101,22 +95,19 @@ export default {
     p {
         text-align: left;
         margin-bottom: 0.5rem;
+        background: white;
     }
 
-    .field:not(:last-child) {
-        margin-bottom: 0.9rem !important;
+    .message {
+        font-size: 20px;
+        line-height: 27px;
     }
 
-    .column.remember-me {
-        text-align: left;
+    .success {
+        color: #00C3AC;
     }
 
-    .column.show-password {
-        text-align: right;
-    }
-
-    .forgot-password {
-        display: inline-block;
-        margin: 1rem;
+    .failed {
+        color: #FF5A5E;
     }
 </style>

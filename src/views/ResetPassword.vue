@@ -2,19 +2,17 @@
     <div class="container">
         <div class="container">
             <h1 class="login-title">
-                Log in
+                Reset password
             </h1>
         </div>
+
+        <p v-if="errorMessage" class="error-message">{{errorMessage}}</p>
 
         <div class="container">
             <form                 
                 method="POST" 
-                @submit.prevent="onLogin"
+                @submit.prevent="onSubmit"
             >
-                <b-field>
-                    <b-input v-model="email" placeholder="Enter your email"></b-input>
-                </b-field>
-
                 <b-field>
                     <b-input 
                         :key="passwordType"
@@ -25,25 +23,25 @@
                     <b-input v-else v-model="password" type="text" placeholder="Enter your password"></b-input>
                 </b-field>
 
+                <b-field>
+                    <b-input 
+                        :key="passwordType"
+                        v-if="passwordType" 
+                        v-model="passwordConfirm" 
+                        type="password" 
+                        placeholder="Confirm your password"></b-input>
+                    <b-input v-else v-model="password" type="text" placeholder="Confirm your password"></b-input>
+                </b-field>
+
                 <div class="columns is-mobile">
-                    <div class="column remember-me">
-                        <b-field>
-                            <b-checkbox>Remember me</b-checkbox>
-                        </b-field>
-                    </div>
+                    <div class="column"></div>
 
                     <div class="column show-password">
                         <a @click="onPasswordTypeSwitch">{{ passwordSwitchLabel }}</a>
                     </div>
                 </div>
 
-                <b-button native-type="submit">Login</b-button>
-
-                <router-link :to="{name: 'ForgotPassword'}" class="forgot-password">Forgot password</router-link>
-
-                <p>Don't have an account? <router-link :to="{name: 'SignUp'}">Sign up</router-link></p>
-
-                <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
+                <b-button native-type="submit">Change</b-button>
             </form>
         </div>
     </div>
@@ -55,27 +53,36 @@ import { mapActions } from 'vuex'
 export default {
     data() {
         return {
-            email : "",
             password : "",
+            passwordConfirm: '',
             passwordType: true,
             passwordSwitchLabel: 'Show password',
+            resetData: {},
+            errorMessage: '',
+        }
+    },
+    mounted() {
+        this.resetData = {
+            token: this.$route.query.token,
+            email: this.$route.query.email,
         }
     },
     methods: {
         ...mapActions({
-            login: 'authentication/login'
+            resetPassword: 'authentication/resetPassword'
         }),
 
-        onLogin: function () {
-            let email = this.email 
-            let password = this.password
+        onSubmit: function () {
+            this.resetData.password = this.password
+            this.resetData.password_confirmation = this.passwordConfirm
             
-            this.login({ email, password })
+            this.resetPassword(this.resetData)
                 .then(() => {
+                    this.errorMessage = ''
                     this.$router.push('/')
                 })
                 .catch(error => {
-                    console.log(error)
+                    this.errorMessage = error.response.data.message
                 })
         },
 
@@ -123,16 +130,10 @@ export default {
         margin-bottom: 0.9rem !important;
     }
 
-    .column.remember-me {
-        text-align: left;
-    }
-
-    .column.show-password {
-        text-align: right;
-    }
-
-    .forgot-password {
-        display: inline-block;
-        margin: 1rem;
+    .error-message {
+        font-size: 20px;
+        line-height: 27px;
+        color: #FF5A5E;
+        text-align: center;
     }
 </style>

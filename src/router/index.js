@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Login from '../views/Login'
 import SignUp from '../views/SignUp'
 import SignUpSuccess from '../views/SignUpSuccess'
 import EmailVerify from '../views/EmailVerify'
+import ForgotPassword from '../views/ForgotPassword'
+import ResetPassword from '../views/ResetPassword'
+
 import Feedback from '../views/Feedback'
 import store from '../store'
 
@@ -43,6 +47,16 @@ const routes = [
         path: '/email/verify/:id/:hash',
         name: 'EmailVerify',
         component: EmailVerify,
+    },
+    {
+        path: '/password/email',
+        name: 'ForgotPassword',
+        component: ForgotPassword,
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPassword,
     },
     { 
         path: '/', 

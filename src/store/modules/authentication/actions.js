@@ -47,6 +47,32 @@ const emailVerify = ({commit}, verifyData) => {
     })
 }
 
+const sendEmailForResetPassword = ({commit}, email) => {
+    console.log(commit)
+    return new Promise((resolve, reject) => {
+        axios.post('/password/email', email)
+            .then(resp => {
+                resolve(resp)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+const resetPassword = ({commit}, resetData) => {
+    return new Promise((resolve, reject) => {
+        axios.post('/password/reset', resetData)
+            .then(resp => {
+                helpers.onAuth(commit, resp)
+                resolve(resp)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
 const logout = ({commit}) => {
     return new Promise((resolve, reject) => {
         axios.post('/auth/logout')
@@ -67,5 +93,7 @@ export default {
     login,
     register,
     emailVerify,
+    sendEmailForResetPassword,
+    resetPassword,
     logout,
 };
