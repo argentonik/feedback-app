@@ -5,19 +5,16 @@ const SERVEY_ID = 1
 
 const getById = ({commit}) => {
     return new Promise((resolve, reject) => {
-        commit('start_loading')
         axios.get('/surveys/'.concat(SERVEY_ID).concat('?include=questions'))
             .then(resp => {
                 commit('set_servey', resp.data)
-                commit('end_loading')
                 commit('set_total_questions')
                 commit('set_current_question', 0)
                 commit('set_base_answer_structure')
                 resolve(resp.data)
             })
             .catch(error => {
-                commit('end_loading')
-                reject(error.response)
+                reject(error)
             })
         })
     }
@@ -31,9 +28,18 @@ const getAnswers = ({commit, getters}) => {
                 if (resp.data.answers.length) {
                     commit('set_answers', resp.data.answers)
                     commit('set_survey_passing_id', resp.data.answers[0].survey_passing_id)
-                    let currentAnswer = getters.getAnswerIfExist
-                    if (currentAnswer) {
-                        commit('set_answer', currentAnswer)
+
+                    if (getters.servey.questions.length == getters.answers.length) {
+                        commit('set_already_passed_survey', true)
+                        commit('set_current_question_index', getters.answers.length)
+                    } else {
+                        // get array of yet not answered answers
+                        let intersectionAnswers = getters.servey.questions.filter(question => {
+                            return !getters.answers.find(answer => {
+                                return answer.question_id == question.id
+                            })
+                        });
+                        commit('set_current_question_index', intersectionAnswers[0].id - 1)
                     }
                 }
                 resolve(resp)

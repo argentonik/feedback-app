@@ -6,6 +6,7 @@ const getDefaultState = () => {
     return {
         servey: null,
         survey_passing_id: null,
+        alreadyPassedSurvey: false,
 
         currentQuestionIndex: 0,
         currentQuestion: null,

@@ -76,7 +76,10 @@
                     @selectValue="onSelectGrade"
                     v-else-if="currentQuestion && currentQuestion.type.id == 3"/>
 
-                <AppFeedbackFinish v-else />
+                <AppFeedbackFinish 
+                    :message="finishMessage" 
+                    v-else 
+                />
 
             </div>
         </div>
@@ -129,12 +132,14 @@ export default {
             isWritingFeedback: false,
             progress: 0,
             progressStep: 0,
+            finishMessage: 'Thanks',
         }
     },
 
     computed: {
         ...mapGetters({
             servey: 'surveys/servey',
+            isAlreadyPassedSurvey:'surveys/isAlreadyPassedSurvey',
 
             currentQuestionIndex: 'surveys/currentQuestionIndex',
             currentQuestion: 'surveys/currentQuestion',
@@ -148,6 +153,12 @@ export default {
     },
 
     watch: {
+        isAlreadyPassedSurvey(val) {
+            if (val) {
+                this.finishMessage = 'This week you have already completed a survey'
+            }
+        },
+
         currentQuestionIndex(index) {
             this.progress = (index + 1) * this.progressStep
             this.isDefaultFeedback = this.currentAnswer.feedback ? true : false
@@ -156,13 +167,21 @@ export default {
     },
 
     mounted() {
-        this.getServeyById().then(() => {
-            this.progressStep = 100 / this.totalQuestions
-            this.progress = this.progressStep
-            this.getAnswers().then(() => {
-                this.loadedAnswers = true
+        this.getServeyById()
+            .then(() => {
+                this.progressStep = 100 / this.totalQuestions
+                this.progress = this.progressStep
+                this.getAnswers().then(() => {
+                    this.loadedAnswers = true
+                })
             })
-        })
+            .catch(err => {
+                console.log('error', err.response)
+                if (err.response.status == 401) {
+                    this.resetServeyState()
+                    this.$router.push({ name: 'Login' })
+                }
+            })
     },
     methods: {
         ...mapActions({
@@ -183,6 +202,7 @@ export default {
 
             logout: 'authentication/logout',
             resetServeyState: 'surveys/resetServeyState',
+            resetAuthState: 'authentication/resetState',
         }),
 
         onBack() {
@@ -206,8 +226,9 @@ export default {
         onClose() {
             this.logout().then(() => {
                 this.$router.push({ name: 'Login' })
+                this.resetServeyState()
+                this.resetAuthState()
             })
-            this.resetServeyState()
         },
 
         onSaveFeedback(feedback) {

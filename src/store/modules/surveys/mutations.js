@@ -1,10 +1,6 @@
-const start_loading = (state) => {
-    state.loading = true
-}
-
-const end_loading = (state) => {
-    state.loading = false
-}
+/*
+// Survey mutations
+*/
 
 const set_servey = (state, servey) => {
     state.servey = servey
@@ -12,6 +8,19 @@ const set_servey = (state, servey) => {
 
 const set_survey_passing_id = (state, survey_passing_id) => {
     state.survey_passing_id = survey_passing_id
+}
+
+const set_already_passed_survey = (state, alreadyPassedSurvey) => {
+    state.alreadyPassedSurvey = alreadyPassedSurvey
+}
+
+/*
+// Current question index mutations
+*/
+
+const set_current_question_index = (state, index) => {
+    state.currentQuestionIndex = index
+    state.currentQuestion = state.servey.questions[index]
 }
 
 const increment_current_question_index = (state) => {
@@ -24,6 +33,10 @@ const decrement_current_question_index = (state) => {
     state.currentQuestion = state.servey.questions[state.currentQuestionIndex]
 }
 
+/*
+// Questions mutations
+*/
+
 const set_total_questions = (state) => {
     state.totalQuestions = state.servey.questions.length
 }
@@ -31,6 +44,29 @@ const set_total_questions = (state) => {
 const set_current_question = (state, index) => {
     state.currentQuestion = state.servey.questions[index]
 }
+
+const set_is_all_question_data_answered = (state) => {
+    if (!state.currentQuestion) {
+        return true
+    }
+
+    let answer = state.currentAnswer.answer_data
+
+    if (state.currentQuestion.type.id == 1) {
+        state.isAllQuestionDataAnswered = answer.rating && answer.tags.length
+    } else if (state.currentQuestion.type.id == 2) {
+        state.isAllQuestionDataAnswered = 
+            state.currentAnswer.answer_data.length === state.currentQuestion.options.indicators.length
+    } else if (state.currentQuestion.type.id == 3) {
+        state.isAllQuestionDataAnswered = state.currentAnswer.answer_data.value != null
+    } else {
+        state.isAllQuestionDataAnswered = true
+    }
+}
+
+/*
+// Answers mutations
+*/
 
 const set_answers = (state, answers) => {
     state.answers = answers
@@ -92,13 +128,13 @@ const set_answer_tags = (state, tags) => {
     state.currentAnswer.answer_data.tags = tags
 }
 
-const set_answer_raiting_with_indicator = (state, raitingData) => {
-    let oldRaitingData = state.currentAnswer.answer_data.find(
-        raiting => raiting.indicator === raitingData.indicator)
-    if (oldRaitingData) {
-        Object.assign(oldRaitingData, raitingData)
+const set_answer_raiting_with_indicator = (state, ratingData) => {
+    let oldRatingData = state.currentAnswer.answer_data.find(
+        rating => rating.indicator === ratingData.indicator)
+    if (oldRatingData) {
+        Object.assign(oldRatingData, ratingData)
     } else {
-        state.currentAnswer.answer_data.push(raitingData)
+        state.currentAnswer.answer_data.push(ratingData)
     }
 }
 
@@ -106,38 +142,18 @@ const set_answer_grade = (state, grade) => {
     state.currentAnswer.answer_data.value = grade
 }
 
-const set_is_all_question_data_answered = (state) => {
-    if (!state.currentQuestion) {
-        return true
-    }
-    
-    let answer = state.currentAnswer.answer_data
-
-    if (state.currentQuestion.type.id == 1) {
-        state.isAllQuestionDataAnswered = answer.rating && answer.tags.length
-    } else if (state.currentQuestion.type.id == 2) {
-        state.isAllQuestionDataAnswered = 
-            state.currentAnswer.answer_data.length === state.currentQuestion.options.indicators.length
-    } else if (state.currentQuestion.type.id == 3) {
-        state.isAllQuestionDataAnswered = state.currentAnswer.answer_data.value != null
-    } else {
-        state.isAllQuestionDataAnswered = true
-    }
-}
-
 export default {
-    start_loading,
-    end_loading,
-
     set_servey,
     set_survey_passing_id,
+    set_already_passed_survey,
 
+    set_current_question_index,
     increment_current_question_index,
     decrement_current_question_index,
-    set_total_questions,
-    set_is_all_question_data_answered,
 
+    set_total_questions,
     set_current_question,
+    set_is_all_question_data_answered,
 
     set_answers,
     add_to_answers,

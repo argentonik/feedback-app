@@ -1,5 +1,6 @@
 const servey = state => state.servey
 const survey_passing_id = state => state.survey_passing_id
+const isAlreadyPassedSurvey = state => state.alreadyPassedSurvey
 
 const currentQuestionIndex = state => state.currentQuestionIndex
 const currentQuestion = state => state.currentQuestion
@@ -30,6 +31,7 @@ const getAnswerIfExist = state => {
 export default {
     servey,
     survey_passing_id,
+    isAlreadyPassedSurvey,
 
     currentQuestionIndex,
     currentQuestion,

@@ -52,6 +52,7 @@ const logout = ({commit}) => {
         axios.post('/auth/logout')
             .then(() => {
                 commit('logout')
+                commit('resetState')
                 localStorage.removeItem('token')
                 delete axios.defaults.headers.common['Authorization']
                 resolve()
