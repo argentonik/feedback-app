@@ -2,29 +2,29 @@
     <div class="container">
         <AppFeedbackHeader class="title">{{ question.text }}</AppFeedbackHeader>
 
-        <p v-if="!checkedStar">
+        <p class="description" v-if="!checkedStar">
             {{ question.description }}
         </p>
-        <p v-else>
-            {{getOptions().description}}
+        <p class="description-pre" v-else>
+            {{ getOptions().description }}
         </p>
 
         <AppStarsRaiting 
             class="stars-raiting"
             size="33px"
-            maxSize="39px"
+            maxSize="40px"
             :defaultValue="isAlreadyExistAnswer() ? this.answer.rating : null"
             @toggleStar="onToggleStar"
         />
 
-        <div class="columns is-mobile is-multiline" v-if="checkedStar">
+        <div class="columns is-mobile is-multiline options" v-if="checkedStar">
             <div 
                 :class="['column', 'is-half', 'star-options', `star-option-${i}`]"
                 v-for="(tag, i) in getOptions().tags"
                 :key="i"
                 @click="onStarOptionClick(i, tag)"
             >
-                <b-button :disabled="disabled" outlined>{{ tag }}</b-button>
+                <div :disabled="disabled" outlined><span>{{ tag }}</span></div>
             </div>
         </div>
     </div>
@@ -125,30 +125,58 @@ export default {
         color: #9B9B9B;
     }
 
-    .title {
-        margin-bottom: 1.2rem;
+    .description {
+        margin: auto;
+        margin-top: 14px;
+        max-width: 204px;
+    }
+
+    .description-pre {
+        line-height: 30px;
+        margin-top: 9px;
+        margin-bottom: -17px;
+        white-space: pre;
     }
 
     .stars-raiting {
         margin-top: 1rem;
     }
 
-    .star-options .button {
+    .options {
+        padding-top: 4px;
+    }
+
+    /deep/ .column.star-options {
+        padding: 12px 5px 3px 10px;
+    }
+
+    .star-options div {
+        border-style: solid;
         background-color: transparent;
         border-color: #FF5A5E;
+        border-width: 1.5px;
         color: #FF5A5E;
         border-radius: 0;
         height: 35px;
         cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        min-width: 155px;
+        max-width: 155px;
     }
 
-    .star-options.selected .button {
+    .star-options div span {
+        display: inline-block;
+        margin-top: 7px;
+    }
+
+    .star-options.selected div {
         border-color: #FF5A5E;
         background-color: #FF5A5E;
         color: white;
     }
 
-    .star-options .button:disabled {
+    .star-options div:disabled {
         opacity: 1;
         cursor: default;
     }

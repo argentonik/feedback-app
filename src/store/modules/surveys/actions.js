@@ -25,7 +25,7 @@ const getAnswers = ({commit, getters}) => {
         axios.get('/surveys-passings/current?survey_id=' + SERVEY_ID + '&include=answers')
             .then(resp => {
                 console.log(resp.data)
-                if (resp.data.answers.length) {
+                if (resp.data.answers && resp.data.answers.length) {
                     commit('set_answers', resp.data.answers)
                     commit('set_survey_passing_id', resp.data.answers[0].survey_passing_id)
 

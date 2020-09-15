@@ -6,7 +6,7 @@
 
 <style scoped>
     h1.title {
-        margin-bottom: 1.2rem;
+        margin-bottom: 40px;
         color: black;
         margin: auto;
         font-size: 20px;

@@ -96,6 +96,7 @@
             <b-progress type="is-danger" :value="progress"></b-progress>
 
             <b-button 
+                class="main-button"
                 @click="onContinue" 
                 :disabled="!isAllQuestionDataAnswered && !isAnswerExist(currentQuestionIndex)"
                 v-if="currentQuestionIndex <= totalQuestions - 1"
@@ -279,7 +280,7 @@ export default {
 
     .image.logo {
         margin-top: 10px;
-        margin-bottom: 44px;
+        margin-bottom: 29px;
         width: 100px;
         height: 100px;
     }
@@ -294,9 +295,14 @@ export default {
         height: 5px;
     }
 
+    /deep/ .progress-wrapper {
+        margin-bottom: 15px;
+    }
+
     /deep/ .progress-wrapper .progress {
         border-radius: 0;
         height: 5px;
+        max-width: 325px;
     }
 
     a {
@@ -308,5 +314,10 @@ export default {
 
     .functional-buttons {
         margin-top: auto;
+        margin-bottom: -31px;
+    }
+
+    .main-button {
+        margin-bottom: 8px;
     }
 </style>
