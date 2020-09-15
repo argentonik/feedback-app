@@ -27,14 +27,13 @@ export default {
             required: false,
         },
         description: {
-            type: String,
             required: true,
         }
     },
     methods: {
         onToggleStar(star) {
             this.$emit('selectStar', {
-                raiting: star, 
+                rating: star, 
                 indicator: this.description,
             })
         }

@@ -10,10 +10,6 @@ import store from '../store'
 Vue.use(VueRouter)
 
 const routes = [
-    { 
-        path: '/', 
-        redirect: '/feedback' 
-    },
     {
         path: '/feedback',
         name: 'Feedback',
@@ -47,7 +43,11 @@ const routes = [
         path: '/email/verify/:id/:hash',
         name: 'EmailVerify',
         component: EmailVerify,
-    }
+    },
+    { 
+        path: '/', 
+        redirect: '/feedback' 
+    },
 ]
 
 const router = new VueRouter({

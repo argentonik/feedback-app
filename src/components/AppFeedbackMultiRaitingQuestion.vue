@@ -5,7 +5,7 @@
         <div class="colums is-mobile" v-if="answer.length">
             <div class="column" v-for="(raitingItem, i) in answer" :key="i">
                 <AppStarsRaitingWithDescription
-                    :raiting="raitingItem.raiting"
+                    :raiting="raitingItem.rating"
                     :description="raitingItem.indicator"
                     @selectStar="onSelectRaiting"
                 />

@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         servey: null,
+        survey_passing_id: null,
 
         currentQuestionIndex: 0,
         currentQuestion: null,

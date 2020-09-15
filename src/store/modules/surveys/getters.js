@@ -1,4 +1,5 @@
 const servey = state => state.servey
+const survey_passing_id = state => state.survey_passing_id
 
 const currentQuestionIndex = state => state.currentQuestionIndex
 const currentQuestion = state => state.currentQuestion
@@ -10,32 +11,25 @@ const answers = state => state.answers
 const currentAnswer = state => state.currentAnswer
 
 const isAnswerExist = state => questionIndex => {
-    let answer = state.answers.filter(answer => {
-        return answer.question_id === questionIndex
+    let answer = state.answers.find(answer => {
+        return answer.question_id == (questionIndex + 1)
     })
 
-    return answer.length ? true : false
+    return answer ? true : false
 }
 
 const getAnswerIfExist = state => {
-    let answer = state.answers.filter(answer => {
-        return answer.question_id === state.currentQuestionIndex
+    let answer = state.answers.find(answer => {
+        return answer.question_id == (state.currentQuestionIndex + 1)
     })
 
-    return answer.length ? answer[0].answer_data : null
-}
-
-const getFeedbackIfExist = state => questionIndex => {
-    let answer = state.answers.filter(answer => {
-        return answer.question_id === questionIndex
-    })
-
-    return answer.length ? answer[0].feedback : null
+    return answer ? answer : null
 }
 
 
 export default {
     servey,
+    survey_passing_id,
 
     currentQuestionIndex,
     currentQuestion,
@@ -46,5 +40,4 @@ export default {
     currentAnswer,
     isAnswerExist,
     getAnswerIfExist,
-    getFeedbackIfExist,
 }

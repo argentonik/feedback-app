@@ -1,7 +1,7 @@
 <template>
     <div 
         class="feedback-view container"
-        v-if="currentQuestion"
+        v-if="loadedAnswers"
     >
         <div class="level is-mobile">
             <div class="level-left">
@@ -78,25 +78,26 @@
 
                 <AppFeedbackFinish v-else />
 
-                <a 
-                    class="add-feedback" 
-                    v-if="currentQuestionIndex <= totalQuestions - 1"
-                    @click="isWritingFeedback = true"
-                >
-                    Add feedback
-                </a>
             </div>
+        </div>
+
+         <div class="functional-buttons">
+             <a 
+                class="add-feedback" 
+                v-if="currentQuestionIndex <= totalQuestions - 1"
+                @click="isWritingFeedback = true"
+            >
+                Add feedback
+            </a>
 
             <b-progress type="is-danger" :value="progress"></b-progress>
 
-            <div class="buttons">
-                <b-button 
-                    @click="onContinue" 
-                    :disabled="!isAllQuestionDataAnswered && !isAnswerExist(currentQuestionIndex)"
-                    v-if="currentQuestionIndex <= totalQuestions - 1"
-                > Continue</b-button>
-                <b-button @click="onClose" v-else>Close</b-button>
-            </div>
+            <b-button 
+                @click="onContinue" 
+                :disabled="!isAllQuestionDataAnswered && !isAnswerExist(currentQuestionIndex)"
+                v-if="currentQuestionIndex <= totalQuestions - 1"
+            > Continue</b-button>
+            <b-button @click="onClose" v-else>Close</b-button>
         </div>
     </div>
 </template>
@@ -124,6 +125,7 @@ export default {
     data() {
         return {
             isDefaultFeedback: '',
+            loadedAnswers: false,
             isWritingFeedback: false,
             progress: 0,
             progressStep: 0,
@@ -142,8 +144,6 @@ export default {
             answers: 'surveys/answers',
             currentAnswer: 'surveys/currentAnswer',
             isAnswerExist: 'surveys/isAnswerExist',
-            getAnswerIfExist: 'surveys/getAnswerIfExist',
-            getFeedbackIfExist: 'surveys/getFeedbackIfExist',
         }),
     },
 
@@ -159,11 +159,16 @@ export default {
         this.getServeyById().then(() => {
             this.progressStep = 100 / this.totalQuestions
             this.progress = this.progressStep
+            this.getAnswers().then(() => {
+                this.loadedAnswers = true
+            })
         })
     },
     methods: {
         ...mapActions({
             getServeyById: 'surveys/getById',
+            getAnswers: 'surveys/getAnswers',
+            saveAnswer: 'surveys/saveAnswer',
 
             incrementCurrentQuestionIndex: 'surveys/incrementCurrentQuestionIndex',
             decrementCurrentQuestionIndex: 'surveys/decrementCurrentQuestionIndex',
@@ -186,8 +191,13 @@ export default {
         },
 
         onContinue() {
-            this.addToAnswersCurrentAnswer()
-            this.incrementCurrentQuestionIndex()
+            if (!this.isAnswerExist(this.currentQuestionIndex)) {
+                this.addToAnswersCurrentAnswer()
+                this.saveAnswer(this.currentAnswer)
+                    .then(() => this.incrementCurrentQuestionIndex())
+            } else {
+                this.incrementCurrentQuestionIndex()
+            }
         },
 
         onClose() {
@@ -221,6 +231,8 @@ export default {
 <style scoped>
     .feedback-view {
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .close-button {
@@ -239,8 +251,8 @@ export default {
     }
 
     .image.logo {
-        margin-top: 32px;
-        margin-bottom: 32px;
+        margin-top: 10px;
+        margin-bottom: 44px;
         width: 100px;
         height: 100px;
     }
@@ -250,7 +262,7 @@ export default {
         margin: 30px 0;
     }
 
-    progress.progress {
+    .buttons progress.progress {
         background-color: #FF5A5E;
         height: 5px;
     }
@@ -265,5 +277,9 @@ export default {
         font-weight: bold;
         font-size: 14px;
         line-height: 19px;
+    }
+
+    .functional-buttons {
+        margin-top: auto;
     }
 </style>

@@ -13,7 +13,7 @@
             class="stars-raiting"
             size="33px"
             maxSize="39px"
-            :defaultValue="isAlreadyExistAnswer() ? this.answer.raiting : null"
+            :defaultValue="isAlreadyExistAnswer() ? this.answer.rating : null"
             @toggleStar="onToggleStar"
         />
 
@@ -51,14 +51,13 @@ export default {
     },
     data() {
         return {
-            checkedStar: this.answer ? this.answer.raiting : null,
+            checkedStar: this.answer ? this.answer.rating : null,
             selectedTags: this.answer ? this.answer.tags : [],
             selectedTagsIndices: [],
             disabled: false,
         }
     },
     mounted() {
-        // select options from answer if passed default answer
         if (this.answer && this.selectedTags.length) {
             this.disabled = true
             this.$el.querySelectorAll('.star-options').forEach(starOption => {
@@ -67,7 +66,6 @@ export default {
                 }
             })
         }
-        console.log(this)
     },
     methods: {
         onToggleStar(star) {

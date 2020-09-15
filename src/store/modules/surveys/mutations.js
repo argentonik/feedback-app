@@ -10,6 +10,10 @@ const set_servey = (state, servey) => {
     state.servey = servey
 }
 
+const set_survey_passing_id = (state, survey_passing_id) => {
+    state.survey_passing_id = survey_passing_id
+}
+
 const increment_current_question_index = (state) => {
     ++state.currentQuestionIndex
     state.currentQuestion = state.servey.questions[state.currentQuestionIndex]
@@ -28,9 +32,13 @@ const set_current_question = (state, index) => {
     state.currentQuestion = state.servey.questions[index]
 }
 
+const set_answers = (state, answers) => {
+    state.answers = answers
+}
+
 const add_to_answers = (state, newAnswer) => {
     let existAnswer = state.answers.find(
-        answer => answer.question_id === newAnswer.question_id)
+        answer => answer.question_id == newAnswer.question_id)
     if (!existAnswer) {
         state.answers.push(newAnswer)
     }
@@ -38,15 +46,17 @@ const add_to_answers = (state, newAnswer) => {
 
 const set_base_answer_structure = (state) => {
     state.currentAnswer = {
-        survey_passing_id: state.servey.id,
-        question_id: state.currentQuestionIndex,
+        question_id: state.currentQuestionIndex + 1,
         feedback: '',
+    }
+    if (state.survey_passing_id) {
+        state.currentAnswer.survey_passing_id = state.survey_passing_id
     }
     
     switch (state.currentQuestion.type.id) {
         case 1:
             state.currentAnswer.answer_data = {
-                raiting: null,
+                rating: null,
                 tags: [],
             }
             break
@@ -69,8 +79,8 @@ const set_feedback_to_answer = (state, feedback) => {
     state.currentAnswer.feedback = feedback
 }
 
-const set_answer_raiting = (state, raiting) => {
-    state.currentAnswer.answer_data.raiting = raiting
+const set_answer_raiting = (state, rating) => {
+    state.currentAnswer.answer_data.rating = rating
 }
 
 const set_answer_tags = (state, tags) => {
@@ -95,7 +105,7 @@ const set_is_all_question_data_answered = (state) => {
     let answer = state.currentAnswer.answer_data
 
     if (state.currentQuestion.type.id == 1) {
-        state.isAllQuestionDataAnswered = answer.raiting && answer.tags.length
+        state.isAllQuestionDataAnswered = answer.rating && answer.tags.length
     } else if (state.currentQuestion.type.id == 2) {
         state.isAllQuestionDataAnswered = 
             state.currentAnswer.answer_data.length === state.currentQuestion.options.indicators.length
@@ -111,6 +121,7 @@ export default {
     end_loading,
 
     set_servey,
+    set_survey_passing_id,
 
     increment_current_question_index,
     decrement_current_question_index,
@@ -119,6 +130,7 @@ export default {
 
     set_current_question,
 
+    set_answers,
     add_to_answers,
     set_answer,
     set_base_answer_structure,

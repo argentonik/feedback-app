@@ -1,15 +1,13 @@
 import axios from 'axios'
-import router from '../../../router'
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 const SERVEY_ID = 1
 
-const getById = ({commit, dispatch, getters}) => {
+const getById = ({commit}) => {
     return new Promise((resolve, reject) => {
         commit('start_loading')
         axios.get('/surveys/'.concat(SERVEY_ID).concat('?include=questions'))
             .then(resp => {
-                console.log(resp.data)
                 commit('set_servey', resp.data)
                 commit('end_loading')
                 commit('set_total_questions')
@@ -19,22 +17,58 @@ const getById = ({commit, dispatch, getters}) => {
             })
             .catch(error => {
                 commit('end_loading')
-                const {status} = error.response;
-                if (status === 401) {
-                    if (getters['authentication/isLoggedIn']) {
-                        dispatch('authentication/logout')
-                    }
-                    router.push('/login')
-                }
                 reject(error.response)
             })
         })
     }
 
+const getAnswers = ({commit, getters}) => {
+    console.log(commit)
+    return new Promise((resolve, reject) => {
+        axios.get('/surveys-passings/current?survey_id=' + SERVEY_ID + '&include=answers')
+            .then(resp => {
+                console.log(resp.data)
+                if (resp.data.answers.length) {
+                    commit('set_answers', resp.data.answers)
+                    commit('set_survey_passing_id', resp.data.answers[0].survey_passing_id)
+                    let currentAnswer = getters.getAnswerIfExist
+                    if (currentAnswer) {
+                        commit('set_answer', currentAnswer)
+                    }
+                }
+                resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+const saveAnswer = ({commit, getters}, answer) => {
+    console.log(commit)
+    return new Promise((resolve, reject) => {
+        let formatedAnswer = Object.assign({}, answer)
+        formatedAnswer.question_id = parseInt(formatedAnswer.question_id)
+        formatedAnswer.answer_data = JSON.stringify(formatedAnswer.answer_data)
+
+        axios.post('/answers/create', formatedAnswer)
+            .then(resp => {
+                console.log(resp)
+                if (!getters.survey_passing_id) {
+                    commit('set_survey_passing_id', resp.data.survey_passing_id)
+                }
+                resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
 const incrementCurrentQuestionIndex = ({commit, getters}) => {
     commit('increment_current_question_index')
     let answer = getters.answers.filter(answer => {
-        return answer.question_id === getters.currentQuestionIndex
+        return answer.question_id == (getters.currentQuestionIndex + 1)
     })
 
     if (answer.length) {
@@ -48,7 +82,7 @@ const incrementCurrentQuestionIndex = ({commit, getters}) => {
 const decrementCurrentQuestionIndex = ({commit, getters}) => {
     commit('decrement_current_question_index')
     let answer = getters.answers.filter(answer => {
-        return answer.question_id === getters.currentQuestionIndex
+        return answer.question_id == (getters.currentQuestionIndex + 1)
     })
 
     if (answer.length) {
@@ -93,6 +127,8 @@ const setAnswerGrade = ({commit}, grade) => {
 
 export default {
     getById,
+    getAnswers,
+    saveAnswer,
 
     incrementCurrentQuestionIndex,
     decrementCurrentQuestionIndex,
