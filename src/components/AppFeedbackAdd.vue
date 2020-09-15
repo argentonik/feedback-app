@@ -68,6 +68,7 @@ export default {
         font-size: 14px;
         line-height: 19px;
         height: 252px;
+        min-width: 325px;
     }
 
     h1.title {
@@ -81,6 +82,7 @@ export default {
 
     .back-button {
         display: inline-block;
+        margin-top: 13px;
         margin-right: 2rem;
         margin-bottom: 1rem;
     }

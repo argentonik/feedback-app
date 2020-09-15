@@ -88,6 +88,7 @@
              <a 
                 class="add-feedback" 
                 v-if="currentQuestionIndex <= totalQuestions - 1"
+                v-show="!isWritingFeedback"
                 @click="isWritingFeedback = true"
             >
                 Add feedback
