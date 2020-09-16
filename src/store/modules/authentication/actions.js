@@ -8,7 +8,7 @@ const login = ({commit}, user) => {
     return new Promise((resolve, reject) => {
         axios.post('/auth/login', user)
             .then(resp => {
-                helpers.onAuth(commit, resp)
+                helpers.onAuth(commit, resp, user.rememberMe)
                 resolve()
             })
             .catch(error => {
@@ -78,8 +78,8 @@ const logout = ({commit}) => {
         axios.post('/auth/logout')
             .then(() => {
                 commit('logout')
-                commit('resetState')
                 localStorage.removeItem('token')
+                sessionStorage.removeItem('token')
                 delete axios.defaults.headers.common['Authorization']
                 resolve()
             })
@@ -89,6 +89,13 @@ const logout = ({commit}) => {
     })
 }
 
+const resetState = ({ commit }) => {
+    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
+    delete axios.defaults.headers.common['Authorization']
+    commit('reset_state')
+}
+
 export default {
     login,
     register,
@@ -96,4 +103,5 @@ export default {
     sendEmailForResetPassword,
     resetPassword,
     logout,
+    resetState,
 };

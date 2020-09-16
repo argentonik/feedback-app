@@ -6,6 +6,8 @@
             </h1>
         </div>
 
+        <p class="errors-message" v-if="error">Oops! That email/ password combination is not valid</p>
+
         <div class="container">
             <form                 
                 method="POST" 
@@ -28,7 +30,7 @@
                 <div class="columns is-mobile">
                     <div class="column remember-me">
                         <b-field>
-                            <b-checkbox>Remember me</b-checkbox>
+                            <b-checkbox v-model="rememberMe">Remember me</b-checkbox>
                         </b-field>
                     </div>
 
@@ -59,6 +61,8 @@ export default {
             password : "",
             passwordType: true,
             passwordSwitchLabel: 'Show password',
+            rememberMe: false,
+            error: false,
         }
     },
     methods: {
@@ -69,13 +73,16 @@ export default {
         onLogin: function () {
             let email = this.email 
             let password = this.password
+            let rememberMe = this.rememberMe
             
-            this.login({ email, password })
+            this.login({ email, password, rememberMe })
                 .then(() => {
+                    this.error = false
                     this.$router.push('/')
                 })
                 .catch(error => {
                     console.log(error)
+                    this.error = true
                 })
         },
 
@@ -134,5 +141,12 @@ export default {
     .forgot-password {
         display: inline-block;
         margin: 1rem;
+    }
+
+    .errors-message {
+        font-size: 20px;
+        line-height: 27px;
+        color: #FF5A5E;
+        text-align: center;
     }
 </style>

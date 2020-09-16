@@ -163,7 +163,7 @@ export default {
 
         currentQuestionIndex(index) {
             this.progress = (index + 1) * this.progressStep
-            this.isDefaultFeedback = this.currentAnswer.feedback ? true : false
+            this.isDefaultFeedback = this.currentAnswer && this.currentAnswer.feedback ? true : false
             this.isWritingFeedback = false
         },
     },
@@ -180,6 +180,7 @@ export default {
             .catch(err => {
                 console.log('error', err.response)
                 if (err.response.status == 401) {
+                    this.resetAuthState()
                     this.resetServeyState()
                     this.$router.push({ name: 'Login' })
                 }
