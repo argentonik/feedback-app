@@ -23,7 +23,6 @@ const register = ({commit}, user) => {
     return new Promise((resolve, reject) => {
         axios.post('/auth/register', user)
             .then(resp => {
-                console.log(resp)
                 helpers.onAuth(commit, resp)
                 resolve()
             })

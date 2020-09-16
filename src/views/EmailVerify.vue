@@ -2,13 +2,13 @@
     <div class="container" v-if="message">
         <div class="container">
             <h1 class="success-title">
-                {{true ? 'Success verified' : 'Failed verified'}}
+                {{verified ? 'Success verified' : 'Failed verified'}}
             </h1>
         </div>
 
         <div class="container">
-          <p :class="[true ? 'success' : 'failed']">{{message}}</p>
-          <router-link v-if="true" to="/login">Log in</router-link>
+          <p :class="[verified ? 'success' : 'failed']">{{message}}</p>
+          <router-link v-if="verified" to="/login">Log in</router-link>
         </div>
     </div>
 </template>

@@ -79,7 +79,6 @@ export default {
                     } else {
                         this.errorMessage = 'Oops! That email/ password combination is not valid'
                     }
-                    console.log(error)
                 })
         }
     }

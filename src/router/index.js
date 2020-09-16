@@ -9,6 +9,7 @@ import ForgotPassword from '../views/ForgotPassword'
 import ResetPassword from '../views/ResetPassword'
 
 import PageNotFound from '../views/PageNotFound'
+import ForbiddenError from '../views/ForbiddenError'
 
 import Feedback from '../views/Feedback'
 import store from '../store'
@@ -59,6 +60,11 @@ const routes = [
         path: '/reset-password',
         name: 'ResetPassword',
         component: ResetPassword,
+    },
+    {
+        path: '/forbidden',
+        component: ForbiddenError,
+        name: 'ForbiddenError',
     },
     { 
         path: '/', 

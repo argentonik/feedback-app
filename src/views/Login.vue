@@ -81,8 +81,7 @@ export default {
                     this.error = false
                     this.$router.push('/')
                 })
-                .catch(error => {
-                    console.log(error)
+                .catch(() => {
                     this.error = true
                 })
         },

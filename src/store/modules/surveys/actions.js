@@ -20,11 +20,9 @@ const getById = ({commit}) => {
     }
 
 const getAnswers = ({commit, getters}) => {
-    console.log(commit)
     return new Promise((resolve, reject) => {
         axios.get('/surveys-passings/current?survey_id=' + SERVEY_ID + '&include=answers')
             .then(resp => {
-                console.log(resp.data)
                 if (resp.data.answers && resp.data.answers.length) {
                     commit('set_answers', resp.data.answers)
                     commit('set_survey_passing_id', resp.data.answers[0].survey_passing_id)
@@ -51,7 +49,6 @@ const getAnswers = ({commit, getters}) => {
 }
 
 const saveAnswer = ({commit, getters}, answer) => {
-    console.log(commit)
     return new Promise((resolve, reject) => {
         let formatedAnswer = Object.assign({}, answer)
         formatedAnswer.question_id = parseInt(formatedAnswer.question_id)
@@ -59,7 +56,6 @@ const saveAnswer = ({commit, getters}, answer) => {
 
         axios.post('/answers/create', formatedAnswer)
             .then(resp => {
-                console.log(resp)
                 if (!getters.survey_passing_id) {
                     commit('set_survey_passing_id', resp.data.survey_passing_id)
                 }

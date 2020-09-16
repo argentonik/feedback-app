@@ -173,13 +173,19 @@ export default {
             .then(() => {
                 this.progressStep = 100 / this.totalQuestions
                 this.progress = this.progressStep
-                this.getAnswers().then(() => {
-                    this.loadedAnswers = true
-                })
+                this.getAnswers()
+                    .then(() => {
+                        this.loadedAnswers = true
+                    })
+                    .catch(err => {
+                        if (err.response.status == 403) {
+                            this.resetServeyState()
+                            this.$router.push({ name: 'ForbiddenError' })
+                        }
+                    })
             })
             .catch(err => {
-                console.log('error', err.response)
-                if (err.response.status == 401) {
+                if (err.response.status == 401 || err.response.status == 403) {
                     this.resetAuthState()
                     this.resetServeyState()
                     this.$router.push({ name: 'Login' })
