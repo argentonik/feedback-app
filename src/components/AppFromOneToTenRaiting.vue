@@ -12,9 +12,9 @@
 
         <p class="grade-one-description">Not at all</p>
 
-        <div class="columns is-mobile is-centered">
+        <div class="columns is-mobile is-centered grade-second-line">
             <div 
-                :class="['column', 'grade', `grade-${i + 6}`, disabled ? 'grade-disabled' : '']" 
+                :class="['column', 'grade', 'grade-after-five', `grade-${i + 6}`, disabled ? 'grade-disabled' : '']" 
                 v-for="(n, i) in 5" 
                 :key="i + 6"
                 @click="onClickGrade(i + 6)"
@@ -68,18 +68,28 @@ export default {
 
 <style scoped>
     .columns {
-        margin-top: 25px;
+        margin-top: 29px;
     }
 
     .grade {
         width: 40px;
         height: 40px;
         max-width: 40px;
-        margin-right: 10px;
+        margin-right: 9px;
+        margin-left: 6px;
         background-color: #E0E0E0;
         border-radius: 50%;
         text-align: center;
         cursor: pointer;
+    }
+
+    .grade-second-line {
+        margin-top: 21px;
+    }
+
+    .grade-after-five {
+        margin-right: 8px;
+        margin-left: 7px;
     }
 
     .selected {
@@ -89,14 +99,14 @@ export default {
 
     .grade-one-description {
         text-align: left;
-        margin-top: -10px;
-        margin-left: 10px;
+        margin-top: -7px;
+        margin-left: -8px;
     }
 
     .grade-ten-description {
         text-align: right;
-        margin-top: -10px;
-        margin-right: 40px;
+        margin-top: -8px;
+        margin-right: 16px;
     }
 
     .grade-disabled {

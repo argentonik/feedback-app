@@ -39,7 +39,12 @@ export default {
 </script>
 
 <style scoped>
-    .title {
+    /deep/ h1.title {
         max-width: 275px;
+        line-height: 28px;
+    }
+
+    .container {
+        margin-top: 27px;
     }
 </style>

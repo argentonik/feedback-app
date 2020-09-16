@@ -273,6 +273,7 @@ export default {
     .back-button {
         width: 25px;
         height: 25px;
+        margin-top: -25px;
     }
 
     .level.is-mobile .level-right.skip-button {
@@ -282,7 +283,7 @@ export default {
 
     .image.logo {
         margin-top: 10px;
-        margin-bottom: 29px;
+        margin-bottom: 22px;
         width: 100px;
         height: 100px;
     }

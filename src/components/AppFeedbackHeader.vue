@@ -11,6 +11,6 @@
         margin: auto;
         font-size: 20px;
         font-weight: bold;
-        line-height: 27px;
+        line-height: 38px;
     }
 </style>

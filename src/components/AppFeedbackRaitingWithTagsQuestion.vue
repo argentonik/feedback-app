@@ -24,7 +24,7 @@
                 :key="i"
                 @click="onStarOptionClick(i, tag)"
             >
-                <div :disabled="disabled" outlined><span>{{ tag }}</span></div>
+                <div :class="disabled ? 'disabled' : ''" outlined><span>{{ tag }}</span></div>
             </div>
         </div>
     </div>
@@ -135,7 +135,7 @@ export default {
         line-height: 30px;
         margin-top: 9px;
         margin-bottom: -17px;
-        white-space: pre;
+        white-space: pre-wrap;
     }
 
     .stars-raiting {
@@ -176,7 +176,7 @@ export default {
         color: white;
     }
 
-    .star-options div:disabled {
+    .star-options div.disabled {
         opacity: 1;
         cursor: default;
     }

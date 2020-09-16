@@ -51,5 +51,6 @@ export default {
         font-size: 12px;
         font-weight: 300;
         text-align: left;
+        margin-right: 65px;
     }
 </style>
