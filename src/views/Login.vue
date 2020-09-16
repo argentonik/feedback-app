@@ -14,7 +14,7 @@
                 @submit.prevent="onLogin"
             >
                 <b-field>
-                    <b-input v-model="email" placeholder="Enter your email"></b-input>
+                    <b-input v-model="email" placeholder="Enter your email" required></b-input>
                 </b-field>
 
                 <b-field>
@@ -23,7 +23,8 @@
                         v-if="passwordType" 
                         v-model="password" 
                         type="password" 
-                        placeholder="Enter your password"></b-input>
+                        placeholder="Enter your password"
+                        required></b-input>
                     <b-input v-else v-model="password" type="text" placeholder="Enter your password"></b-input>
                 </b-field>
 
@@ -43,7 +44,7 @@
 
                 <router-link :to="{name: 'ForgotPassword'}" class="forgot-password">Forgot password</router-link>
 
-                <p>Don't have an account? <router-link :to="{name: 'SignUp'}">Sign up</router-link></p>
+                <p class="sign-up">Don't have an account? <router-link :to="{name: 'SignUp'}">Sign up</router-link></p>
 
                 <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
             </form>
@@ -111,8 +112,8 @@ export default {
 
     .login-title {
         font-size: 20px;
-        margin-top: 0.4rem;
-        margin-bottom: 2.3rem;
+        margin-top: 5px;
+        margin-bottom: 38px;
         font-weight: bold;
         color: black;
     }
@@ -132,20 +133,34 @@ export default {
 
     .column.remember-me {
         text-align: left;
+        margin-bottom: 5px;
+        margin-top: 1px;
+        margin-left: 3px;
     }
 
     .column.show-password {
         text-align: right;
+        margin-right: 4px;
+        margin-top: 1px;
     }
 
     .forgot-password {
         display: inline-block;
-        margin: 1rem;
+        margin: 15px 3px 32px 0;
+        font-size: 14px;
+    }
+
+    .sign-up {
+        margin-bottom: 16px;
     }
 
     .errors-message {
-        font-size: 20px;
-        line-height: 27px;
+        margin: auto;
+        margin-top: -18px !important;
+        margin-bottom: 32px !important;
+        max-width: 204px;
+        font-size: 14px;
+        line-height: 19px;
         color: #FF5A5E;
         text-align: center;
     }

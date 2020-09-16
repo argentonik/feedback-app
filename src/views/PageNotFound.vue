@@ -1,13 +1,13 @@
 <template>
     <div class="container main-container">
         <div class="container">
-            <h1 class="success-title">
-                Success
+            <h1 class="not-found-title">
+                Page not found
             </h1>
         </div>
 
         <div class="container">
-          <p>We have sent you an activation code, please check your email.</p>
+          <p>404 Error</p>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@
         margin-top: -2px;
     }
 
-    .success-title {
+    .not-found-title {
         font-size: 20px;
         margin-top: 0.4rem;
         margin-bottom: 2.3rem;

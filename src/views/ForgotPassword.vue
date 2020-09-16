@@ -88,6 +88,11 @@ export default {
         color: black;
     }
 
+    .button {
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
     a {
         color: #00C3AC;
     }
@@ -96,6 +101,7 @@ export default {
         text-align: left;
         margin-bottom: 0.5rem;
         background: white;
+        text-align: center;
     }
 
     .message {

@@ -8,6 +8,8 @@ import EmailVerify from '../views/EmailVerify'
 import ForgotPassword from '../views/ForgotPassword'
 import ResetPassword from '../views/ResetPassword'
 
+import PageNotFound from '../views/PageNotFound'
+
 import Feedback from '../views/Feedback'
 import store from '../store'
 
@@ -61,6 +63,10 @@ const routes = [
     { 
         path: '/', 
         redirect: '/feedback' 
+    },
+    { 
+        path: "*", 
+        component: PageNotFound 
     },
 ]
 

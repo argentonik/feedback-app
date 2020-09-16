@@ -52,6 +52,7 @@
 
   button.button, button.button:hover {
     width: 100%;
+    max-width: 325px;
     min-height: 45px;
     background-color: #FF5A5E;
     color: white;

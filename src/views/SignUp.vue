@@ -6,20 +6,22 @@
             </h1>
         </div>
 
+        <p class="errors-message" v-if="error">{{ errorMessage }}</p>
+
         <div class="container">
             <form
                 method="POST" 
                 @submit.prevent="onRegister"
             >
                 <b-field>
-                    <b-input v-model="email" placeholder="Enter your email"></b-input>
+                    <b-input v-model="email" placeholder="Enter your email" required></b-input>
                 </b-field>
 
                 <b-field>
-                    <b-input v-model="password" type="password" placeholder="Enter your password"></b-input>
+                    <b-input v-model="password" type="password" placeholder="Enter your password" required></b-input>
                 </b-field>
 
-                <div class="columns">
+                <div class="columns is-mobile">
                     <div class="column remember-me">
                         <b-field>
                             <b-checkbox>Remember me</b-checkbox>
@@ -33,9 +35,9 @@
 
                 <b-button native-type="submit">Register</b-button>
 
-                <p>Already have an account? <router-link to="/">Log in</router-link></p>
+                <p class="login">Already have an account? <router-link to="/login">Log in</router-link></p>
 
-                <p>Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
+                <p class="get-in-touch">Need help or have a question, <a href="mailto:qwertf030915@gmail.com">get in touch</a>.</p>
             </form>
         </div>
     </div>
@@ -49,6 +51,8 @@ export default {
         return {
             email : "",
             password : "",
+            error: false,
+            errorMessage: '',
         }
     },
       methods: {
@@ -62,9 +66,19 @@ export default {
 
             this.register({email, password})
                 .then(() => {
+                    this.error = false
                     this.$router.push('signup/success')
                 })
                 .catch(error => {
+                    this.error = true
+                    let errorData = error.response.data
+                    if (errorData.errors && errorData.errors.email) {
+                        this.errorMessage = errorData.errors.email[0]
+                    } else if (errorData.errors && errorData.errors.password) {
+                        this.errorMessage = errorData.errors.password[0]
+                    } else {
+                        this.errorMessage = 'Oops! That email/ password combination is not valid'
+                    }
                     console.log(error)
                 })
         }
@@ -88,8 +102,8 @@ export default {
 
     .login-title {
         font-size: 20px;
-        margin-top: 0.4rem;
-        margin-bottom: 2.3rem;
+        margin-top: 5px;
+        margin-bottom: 38px;
         font-weight: bold;
         color: black;
     }
@@ -109,14 +123,41 @@ export default {
 
     .column.remember-me {
         text-align: left;
+        margin-bottom: 5px;
+        margin-top: 1px;
+        margin-left: 3px;
     }
 
     .column.show-password {
         text-align: right;
+        margin-right: 4px;
+        margin-top: 1px;
     }
 
     .forgot-password {
         display: inline-block;
-        margin: 1rem;
+        margin: 15px 3px 32px 0;
+        font-size: 14px;
+    }
+
+    .login {
+        margin-left: 2px;
+        margin-top: 14px;
+        margin-bottom: 16px;
+    }
+
+    .get-in-touch {
+        margin-left: 2px;
+    }
+
+    .errors-message {
+        margin: auto;
+        margin-top: -18px !important;
+        margin-bottom: 32px !important;
+        max-width: 204px;
+        font-size: 14px;
+        line-height: 19px;
+        color: #FF5A5E;
+        text-align: center;
     }
 </style>

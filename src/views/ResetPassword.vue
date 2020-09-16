@@ -15,6 +15,7 @@
             >
                 <b-field>
                     <b-input 
+                        required
                         :key="passwordType"
                         v-if="passwordType" 
                         v-model="password" 
@@ -25,6 +26,7 @@
 
                 <b-field>
                     <b-input 
+                        required
                         :key="passwordType"
                         v-if="passwordType" 
                         v-model="passwordConfirm" 
@@ -130,9 +132,18 @@ export default {
         margin-bottom: 0.9rem !important;
     }
 
+    .show-password {
+        margin-right: -25px;
+        padding-right: 0;
+    }
+
     .error-message {
-        font-size: 20px;
-        line-height: 27px;
+        margin: auto;
+        margin-top: -18px !important;
+        margin-bottom: 32px !important;
+        max-width: 204px;
+        font-size: 14px;
+        line-height: 19px;
         color: #FF5A5E;
         text-align: center;
     }
